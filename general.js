@@ -4,8 +4,9 @@ function App() {
   this.level = [];
 
   //DOM elements
-  this.containerElement = null;
+  this.containerElement = document.getElementById('container');
   this.welcomePage = null;
+  this.welcomeButton = null;
   this.appMainPage = null;
   this.timerElement = null;
   this.scoreElement = null;
@@ -20,11 +21,12 @@ function App() {
   this.bestScorers2Element = null;
 }
 
-var app = new App();
-
-function buildWelcome() {
+App.prototype.buildWelcome = function() {
   this.welcomePage = document.createElement('div');
-  this.welcomePage.classList.add('welcome');
-  con
+  this.welcomePage.className = 'welcome';
+  this.containerElement.appendChild(this.welcomePage);
 
+  this.welcomeButton = document.createElement('button');
+  this.welcomeButton.className = 'welcomeButton';
+  this.welcomePage.appendChild(this.welcomeButton);
 }

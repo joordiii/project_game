@@ -11,7 +11,7 @@ html, body {
 }
 
 #container {
-  background-image: url('images/Background_test.png');
+  /*background-image: url('images/Background_test.png');*/
   background-size: cover;
   background-position: center;
   height: 100%;
@@ -41,6 +41,59 @@ html, body {
   background-color: green;
   height: 20%;
   width: 100%;
+}
+
+.welcome {
+  height: 100%;
+  width: 100%;
+  background-image: url('images/Background_test.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/*.welcome {
+  background-image: url('images/Background_test.png');
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}*/
+
+/*  Buttons Styles  */
+
+.welcomeButton, .button-error, .button-warning, .button-secondary {
+  color: white;
+  border-radius: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.welcomeButton {
+  background: rgb(28, 184, 65);
+  /* this is a green */
+  width: 200px;
+  height: 80px;
+}
+
+.button-error {
+  background: rgb(202, 60, 60);
+  /* this is a maroon */
+}
+
+.button-warning {
+  background: rgb(223, 117, 20);
+  /* this is an orange */
+}
+
+.button-secondary {
+  background: rgb(66, 184, 221);
+  /* this is a light blue */
 }
 
 /*Media Queries*/
