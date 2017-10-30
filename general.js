@@ -1,8 +1,10 @@
 function App() {
   var self = this;
   self.state = '';
-  self.score = null;
+  self.waterCount = null;
+  self.touchCount = null;
   self.level = [];
+  self.selectedRec = null;
 
   //DOM elements
   self.containerElement = document.getElementById('container');
@@ -10,6 +12,11 @@ function App() {
   self.appMainPage = null;
   self.boardElement = null;
   self.gridContainer = null;
+  self.iDiv = null;
+  //RadioButtons
+  self.inputRadioEasy = null;
+  self.inputRadioMedium = null;
+  self.inputRadioMedium = null;
 
   //Initail Welcome
   self.buildWelcome = function() {
@@ -80,10 +87,20 @@ function App() {
     timerElement.className = 'size';
     header1.appendChild(timerElement);
     //
-    var scoreElement = document.createElement('div');
-    scoreElement.className = 'scoreElement';
-    scoreElement.className = 'size';
-    header1.appendChild(scoreElement);
+    var scoreElementOuter = document.createElement('div');
+    scoreElementOuter.className = 'scoreElementOuter';
+    /*scoreElementOuter.className = 'size';*/
+    header1.appendChild(scoreElementOuter);
+    //
+    var scoreElement1 = document.createElement('div');
+    scoreElement1.className = 'scoreElement1';
+    /*scoreElement1.className = 'size';*/
+    scoreElementOuter.appendChild(scoreElement1);
+    //
+    var scoreElement2 = document.createElement('div');
+    scoreElement2.className = 'scoreElement2';
+    /*scoreElement2.className = 'size';*/
+    scoreElementOuter.appendChild(scoreElement2);
     //
     var nameElement = document.createElement('div');
     nameElement.className = 'nameElement';
@@ -133,15 +150,24 @@ function App() {
     var timerSpace = document.createElement('div');
     timerSpace.className = 'timerSpace';
     timerElement.appendChild(timerSpace);
-    // Score space lavel
-    var scoreSpacePar = document.createElement('p');
-    scoreSpacePar.className = 'scoreSpacePar';
-    scoreSpacePar.innerText = 'SCORE:';
-    scoreElement.appendChild(scoreSpacePar);
+    // Score space lavel1
+    var scoreSpacePar1 = document.createElement('p');
+    scoreSpacePar1.className = 'scoreSpacePar1';
+    scoreSpacePar1.innerText = 'SCORE:';
+    scoreElement1.appendChild(scoreSpacePar1);
     //Building the score space
-    var scoreSpace = document.createElement('div');
-    scoreSpace.className = 'scoreSpace';
-    scoreElement.appendChild(scoreSpace);
+    var scoreSpace1 = document.createElement('div');
+    scoreSpace1.className = 'scoreSpace1';
+    scoreElement1.appendChild(scoreSpace1);
+    // Score space lavel2
+    var scoreSpacePar2 = document.createElement('p');
+    scoreSpacePar2.className = 'scoreSpacePar2';
+    scoreSpacePar2.innerText = 'SCORE:';
+    scoreElement2.appendChild(scoreSpacePar2);
+    //Building the score space
+    var scoreSpace2 = document.createElement('div');
+    scoreSpace2.className = 'scoreSpace2';
+    scoreElement2.appendChild(scoreSpace2);
     //Building the buttons
     //Start
     var startButton = document.createElement('button');
@@ -191,70 +217,103 @@ function App() {
     nameElement.appendChild(nameElementInput);
     //Create Radio buttons (Level Selection)
     //Easy
-    var inputRadioEasy = document.createElement('input');
-    inputRadioEasy.type = "radio";
-    inputRadioEasy.className = 'inputRadioEasy';
-    inputRadioEasy.type = 'radio';
-    inputRadioEasy.checked = 'true';
+    self.inputRadioEasy = document.createElement('input');
+    self.inputRadioEasy.type = "radio";
+    self.inputRadioEasy.className = 'inputRadioEasy';
+    self.inputRadioEasy.type = 'radio';
+    self.inputRadioEasy.checked = 'true';
     var labelRadioEasy = document.createElement('label');
     labelRadioEasy.innerHTML = 'LEVEL EASY';
     var pEasy = document.createElement('p');
     pEasy.className = 'easyBox';
     var radioFormLevel1 = document.createElement('form');
-    pEasy.appendChild(inputRadioEasy);
+    pEasy.appendChild(self.inputRadioEasy);
     pEasy.appendChild(labelRadioEasy);
     radioFormLevel1.appendChild(pEasy);
     levelElement.appendChild(radioFormLevel1);
     //Medium
-    var inputRadioMedium = document.createElement('input');
-    inputRadioMedium.type = "radio";
-    inputRadioMedium.className = 'inputRadioMedium';
-    inputRadioMedium.type = 'radio';
+    self.inputRadioMedium = document.createElement('input');
+    self.inputRadioMedium.type = "radio";
+    self.inputRadioMedium.className = 'inputRadioMedium';
+    self.inputRadioMedium.type = 'radio';
     var labelRadioMedium = document.createElement('label');
     labelRadioMedium.innerHTML = 'LEVEL MEDIUM';
     var pMedium = document.createElement('p');
     pMedium.className = 'mediumBox';
     var radioFormLevel2 = document.createElement('form');
-    pMedium.appendChild(inputRadioMedium);
+    pMedium.appendChild(self.inputRadioMedium);
     pMedium.appendChild(labelRadioMedium);
     radioFormLevel2.appendChild(pMedium);
     levelElement.appendChild(radioFormLevel2);
     //Hard
-    var inputRadioHard = document.createElement('input');
-    inputRadioHard.type = "radio";
-    inputRadioHard.className = 'inputRadioHard';
-    inputRadioHard.type = 'radio';
+    self.inputRadioHard = document.createElement('input');
+    self.inputRadioHard.type = "radio";
+    self.inputRadioHard.className = 'inputRadioHard';
+    self.inputRadioHard.type = 'radio';
     var labelRadioHard = document.createElement('label');
     labelRadioHard.innerHTML = 'LEVEL HARD';
     var pHard = document.createElement('p');
     pHard.className = 'hardBox';
     var radioFormLevel3 = document.createElement('form');
-    pHard.appendChild(inputRadioHard);
+    pHard.appendChild(self.inputRadioHard);
     pHard.appendChild(labelRadioHard);
     radioFormLevel3.appendChild(pHard);
     levelElement.appendChild(radioFormLevel3);
     //Building de grid
     self.buildGrid();
+    self.addSubmarineToDiv();
   };
 
   //Build grid
   self.buildGrid = function() {
     var gridContainer = document.createElement('div');
     gridContainer.className = 'gridContainer';
-
     var taula = [];
     for (var a = 0; a < 10; a++) {
       var fila = [];
       for (var b = 0; b < 10; b++) {
-        var iDiv = document.createElement('div');
-        iDiv.className = 'iDiv';
-        iDiv.id = 'c' + a + b;
-        gridContainer.appendChild(iDiv);
-        fila.push(iDiv);
+        self.iDiv = document.createElement('div');
+        self.iDiv.className = 'iDiv';
+        self.iDiv.id = 'c' + a + b;
+        gridContainer.appendChild(self.iDiv);
+        fila.push(self.iDiv);
+        self.iDiv.addEventListener('click', flipCard);
       }
       taula.push(fila);
     }
     self.boardElement.appendChild(gridContainer);
+  };
+
+  self.flipCard = function() {
+
+  };
+
+  //Adding submarines to Div
+  self.addSubmarineToDiv = function() {
+    //Random array of 100 numbers
+    var grid = [];
+    while (grid.length < 100) {
+      var randomnumber = Math.floor(Math.random() * 100);
+      if (grid.indexOf(randomnumber) > -1) continue;
+      grid[grid.length] = randomnumber;
+    }
+
+    //Extracting 60 numbers from random array and giving them and image (submarine)
+    for (var i = 0; i < 60; i++) {
+      var idNumber = grid[i];
+      if (idNumber < 10) {
+        var toStr = idNumber.toString();
+        var toStrPlusZero = '0' + toStr;
+        idNumber = toStrPlusZero;
+      }
+      var div = document.getElementById('c' + idNumber);
+      var iDivImg = document.createElement('img');
+      iDivImg.setAttribute("src", "images/blue.jpg");
+      iDivImg.setAttribute("height", "100%");
+      iDivImg.setAttribute("width", "100%");
+      iDivImg.style.display = "none";
+      div.appendChild(iDivImg);
+    }
   };
 
 
