@@ -1,223 +1,263 @@
 function App() {
-  this.state = '';
-  this.score = null;
-  this.level = [];
+  var self = this;
+  self.state = '';
+  self.score = null;
+  self.level = [];
 
   //DOM elements
-  this.containerElement = document.getElementById('container');
-  this.welcomePage = null;
-  this.welcomeButton = null;
-  this.iconPlayButton = null;
-  this.textPlayButton = null;
-  this.paragraphPlayButton = null;
-  this.appMainPage = null;
-  this.mainHeader = null;
-  this.mainMain = null;
-  this.mainFooter = null;
-  this.header1 = null;
-  this.header2 = null;
-  this.header3 = null;
-  this.timerElement = null;
-  this.timerSpace = null;
+  self.containerElement = document.getElementById('container');
+  self.welcomePage = null;
+  self.appMainPage = null;
+  self.boardElement = null;
+  self.gridContainer = null;
 
-  this.scoreElement = null;
-  this.scoreSpace = null;
-  this.nameElement = null;
-  this.nameElementInput = null;
-  this.startButtonElement = null;
-  this.startButton = null;
-  this.iconPlayButton2 = null;
-  this.restartButtonElement = null;
-  this.restartButton = null;
-  this.iconRestartButton = null;
-  this.resetElement = null;
-  this.resetButton = null;
-  this.iconResetButton = null;
-  this.messageElement = null;
-  this.boardElement = null;
-  this.levelElement = null;
-  this.bestScorers1Element = null;
-  this.bestScorers2Element = null;
+  //Initail Welcome
+  self.buildWelcome = function() {
+    //Building de entire container page
+    self.welcomePage = document.createElement('div');
+    self.welcomePage.className = 'welcome';
+    self.containerElement.appendChild(self.welcomePage);
+    //Building the button
+    var welcomeButton = document.createElement('button');
+    welcomeButton.className = 'welcomeButton';
+    self.welcomePage.appendChild(welcomeButton);
+    //Afegeixo el eventListener al Botó
+    welcomeButton.addEventListener("click", self.buildMainScreen);
+    //welcomeButton.onclick = self.buildMainScreen();
+    //Building de play ICON
+    var iconPlayButton = document.createElement('i');
+    iconPlayButton.classList.add('fa-play-circle-o', 'fa', 'fa-4x', 'iconPlayButton');
+    welcomeButton.innerHTML = iconPlayButton;
+    //Building the text PLAY
+    var textPlayButton = document.createTextNode('PLAY');
+    var paragraphPlayButton = document.createElement('p');
+    paragraphPlayButton.className = 'paragraphPlayButton';
+    paragraphPlayButton.appendChild(textPlayButton);
+    welcomeButton.appendChild(paragraphPlayButton);
+  };
+
+  //Destroy welcome page
+  self.destroyWelcome = function() {
+    /*this.containerElement.removeChild(this.welcomePage);*/
+    self.welcomePage.remove();
+  };
+
+  //Play, Build main Screen
+  self.buildMainScreen = function() {
+    //Destroy welcomePage
+    self.destroyWelcome();
+    //Building de entire container page
+    self.appMainPage = document.createElement('div');
+    self.appMainPage.className = 'appMainPage';
+    self.containerElement.appendChild(self.appMainPage);
+    //Building the header
+    var mainHeader = document.createElement('div');
+    mainHeader.id = 'header';
+    self.appMainPage.appendChild(mainHeader);
+    //Building the main central part
+    var mainMain = document.createElement('div');
+    mainMain.id = 'main';
+    self.appMainPage.appendChild(mainMain);
+    //Building the footer
+    var mainFooter = document.createElement('div');
+    mainFooter.id = 'footer';
+    self.appMainPage.appendChild(mainFooter);
+    //Building the 3 sections into the header
+    var header1 = document.createElement('div');
+    header1.className = 'innerHeader';
+    mainHeader.appendChild(header1);
+    //
+    var header2 = document.createElement('div');
+    header2.className = 'innerHeader';
+    mainHeader.appendChild(header2);
+    //
+    var header3 = document.createElement('div');
+    header3.className = 'innerHeader';
+    mainHeader.appendChild(header3);
+    //Building subsections into the header
+    var timerElement = document.createElement('div');
+    timerElement.className = 'timerElement';
+    timerElement.className = 'size';
+    header1.appendChild(timerElement);
+    //
+    var scoreElement = document.createElement('div');
+    scoreElement.className = 'scoreElement';
+    scoreElement.className = 'size';
+    header1.appendChild(scoreElement);
+    //
+    var nameElement = document.createElement('div');
+    nameElement.className = 'nameElement';
+    nameElement.className = 'size';
+    header2.appendChild(nameElement);
+    //
+    var startButtonElement = document.createElement('div');
+    startButtonElement.className = 'startButtonElement';
+    startButtonElement.className = 'size';
+    header2.appendChild(startButtonElement);
+    //
+    var restartButtonElement = document.createElement('div');
+    restartButtonElement.className = 'restartButtonElement';
+    restartButtonElement.className = 'size';
+    header3.appendChild(restartButtonElement);
+    //
+    var resetElement = document.createElement('div');
+    resetElement.className = 'resetElement';
+    resetElement.className = 'size';
+    header3.appendChild(resetElement);
+    //Building the 3 sections into the main
+    var messageElement = document.createElement('div');
+    messageElement.className = 'messageElement';
+    mainMain.appendChild(messageElement);
+    //
+    self.boardElement = document.createElement('div');
+    self.boardElement.className = 'boardElement';
+    mainMain.appendChild(self.boardElement);
+    //
+    var levelElement = document.createElement('div');
+    levelElement.className = 'levelElement';
+    mainMain.appendChild(levelElement);
+    //Building the 2 sections into footer
+    var bestScorers1Element = document.createElement('div');
+    bestScorers1Element.className = 'bestScorersElement';
+    mainFooter.appendChild(bestScorers1Element);
+    //
+    var bestScorers2Element = document.createElement('div');
+    bestScorers2Element.className = 'bestScorersElement';
+    mainFooter.appendChild(bestScorers2Element);
+    // Timer space lavel
+    var timerSpacePar = document.createElement('p');
+    timerSpacePar.className = 'timerSpacePar';
+    timerSpacePar.innerText = 'TIME:';
+    timerElement.appendChild(timerSpacePar);
+    //Building the timer space
+    var timerSpace = document.createElement('div');
+    timerSpace.className = 'timerSpace';
+    timerElement.appendChild(timerSpace);
+    // Score space lavel
+    var scoreSpacePar = document.createElement('p');
+    scoreSpacePar.className = 'scoreSpacePar';
+    scoreSpacePar.innerText = 'SCORE:';
+    scoreElement.appendChild(scoreSpacePar);
+    //Building the score space
+    var scoreSpace = document.createElement('div');
+    scoreSpace.className = 'scoreSpace';
+    scoreElement.appendChild(scoreSpace);
+    //Building the buttons
+    //Start
+    var startButton = document.createElement('button');
+    startButton.className = 'startButton';
+    startButton.className = 'sizeBut';
+    startButtonElement.appendChild(startButton);
+    //Restart
+    var restartButton = document.createElement('button');
+    restartButton.className = 'restartButton';
+    restartButton.className = 'sizeBut';
+    restartButtonElement.appendChild(restartButton);
+    //Start
+    var resetButton = document.createElement('button');
+    resetButton.className = 'resetButton';
+    resetButton.className = 'sizeBut';
+    resetElement.appendChild(resetButton);
+    //Building de play2 ICON
+    var iconPlayButton2 = document.createElement('i');
+    iconPlayButton2.classList.add('fa-play-circle-o');
+    iconPlayButton2.classList.add('fa');
+    iconPlayButton2.classList.add('fa-2x');
+    iconPlayButton2.classList.add('iconPlayButton');
+    startButton.appendChild(iconPlayButton2);
+    //Building de replay ICON
+    var iconRestartButton = document.createElement('i');
+    iconRestartButton.classList.add('fa-reply-all');
+    iconRestartButton.classList.add('fa');
+    iconRestartButton.classList.add('fa-2x');
+    iconRestartButton.classList.add('iconRestartButton');
+    restartButton.appendChild(iconRestartButton);
+    //Building de resetButton ICON
+    var iconResetButton = document.createElement('i');
+    iconResetButton.classList.add('fa-hand-paper-o');
+    iconResetButton.classList.add('fa');
+    iconResetButton.classList.add('fa-2x');
+    iconResetButton.classList.add('iconResetButton');
+    resetButton.appendChild(iconResetButton);
+    //Building de form
+    var nameElementPar = document.createElement('p');
+    nameElementPar.className = 'nameElementPar';
+    nameElementPar.innerText = 'NAME:';
+    nameElement.appendChild(nameElementPar);
+    //Input text
+    var nameElementInput = document.createElement('input');
+    nameElementInput.type = "text";
+    nameElementInput.className = 'nameElementInput';
+    nameElement.appendChild(nameElementInput);
+    //Create Radio buttons (Level Selection)
+    //Easy
+    var inputRadioEasy = document.createElement('input');
+    inputRadioEasy.type = "radio";
+    inputRadioEasy.className = 'inputRadioEasy';
+    inputRadioEasy.type = 'radio';
+    inputRadioEasy.checked = 'true';
+    var labelRadioEasy = document.createElement('label');
+    labelRadioEasy.innerHTML = 'LEVEL EASY';
+    var pEasy = document.createElement('p');
+    pEasy.className = 'easyBox';
+    var radioFormLevel1 = document.createElement('form');
+    pEasy.appendChild(inputRadioEasy);
+    pEasy.appendChild(labelRadioEasy);
+    radioFormLevel1.appendChild(pEasy);
+    levelElement.appendChild(radioFormLevel1);
+    //Medium
+    var inputRadioMedium = document.createElement('input');
+    inputRadioMedium.type = "radio";
+    inputRadioMedium.className = 'inputRadioMedium';
+    inputRadioMedium.type = 'radio';
+    var labelRadioMedium = document.createElement('label');
+    labelRadioMedium.innerHTML = 'LEVEL MEDIUM';
+    var pMedium = document.createElement('p');
+    pMedium.className = 'mediumBox';
+    var radioFormLevel2 = document.createElement('form');
+    pMedium.appendChild(inputRadioMedium);
+    pMedium.appendChild(labelRadioMedium);
+    radioFormLevel2.appendChild(pMedium);
+    levelElement.appendChild(radioFormLevel2);
+    //Hard
+    var inputRadioHard = document.createElement('input');
+    inputRadioHard.type = "radio";
+    inputRadioHard.className = 'inputRadioHard';
+    inputRadioHard.type = 'radio';
+    var labelRadioHard = document.createElement('label');
+    labelRadioHard.innerHTML = 'LEVEL HARD';
+    var pHard = document.createElement('p');
+    pHard.className = 'hardBox';
+    var radioFormLevel3 = document.createElement('form');
+    pHard.appendChild(inputRadioHard);
+    pHard.appendChild(labelRadioHard);
+    radioFormLevel3.appendChild(pHard);
+    levelElement.appendChild(radioFormLevel3);
+    //Building de grid
+    self.buildGrid();
+  };
+
+  //Build grid
+  self.buildGrid = function() {
+    var gridContainer = document.createElement('div');
+    gridContainer.className = 'gridContainer';
+
+    var taula = [];
+    for (var a = 0; a < 10; a++) {
+      var fila = [];
+      for (var b = 0; b < 10; b++) {
+        var iDiv = document.createElement('div');
+        iDiv.className = 'iDiv';
+        iDiv.id = 'c' + a + b;
+        gridContainer.appendChild(iDiv);
+        fila.push(iDiv);
+      }
+      taula.push(fila);
+    }
+    self.boardElement.appendChild(gridContainer);
+  };
+
+
+
+
 }
-
-//Initail Welcome
-App.prototype.buildWelcome = function() {
-  //Building de entire container page
-  this.welcomePage = document.createElement('div');
-  this.welcomePage.className = 'welcome';
-  this.containerElement.appendChild(this.welcomePage);
-  //Building the button
-  this.welcomeButton = document.createElement('button');
-  this.welcomeButton.className = 'welcomeButton';
-  this.welcomePage.appendChild(this.welcomeButton);
-  //Afegeixo el eventListener al Botó
-  this.welcomeButton.addEventListener("click", this.buildMainScreen);
-  //Building de play ICON
-  this.iconPlayButton = document.createElement('i');
-  this.iconPlayButton.classList.add('fa-play-circle-o');
-  this.iconPlayButton.classList.add('fa');
-  this.iconPlayButton.classList.add('fa-4x');
-  this.iconPlayButton.classList.add('iconPlayButton');
-  this.welcomeButton.appendChild(this.iconPlayButton);
-  //Building the text PLAY
-  this.textPlayButton = document.createTextNode('PLAY');
-  this.paragraphPlayButton = document.createElement('p');
-  this.paragraphPlayButton.className = 'paragraphPlayButton';
-  this.paragraphPlayButton.appendChild(this.textPlayButton);
-  this.welcomeButton.appendChild(this.paragraphPlayButton);
-};
-
-App.prototype.destroyWelcome = function() {
-  this.welcomePage.remove();
-};
-
-
-//Play, main Screen
-App.prototype.buildMainScreen = function() {
-  //Building de entire container page
-  this.appMainPage = document.createElement('div');
-  this.appMainPage.className = 'appMainPage';
-  this.containerElement.appendChild(this.appMainPage);
-  //Building the header
-  this.mainHeader = document.createElement('div');
-  this.mainHeader.id = 'header';
-  this.appMainPage.appendChild(this.mainHeader);
-  //Building the main central part
-  this.mainMain = document.createElement('div');
-  this.mainMain.id = 'main';
-  this.appMainPage.appendChild(this.mainMain);
-  //Building the footer
-  this.mainFooter = document.createElement('div');
-  this.mainFooter.id = 'footer';
-  this.appMainPage.appendChild(this.mainFooter);
-  //Building the 3 sections into the header
-  this.header1 = document.createElement('div');
-  this.header1.className = 'innerHeader';
-  this.mainHeader.appendChild(this.header1);
-  //
-  this.header2 = document.createElement('div');
-  this.header2.className = 'innerHeader';
-  this.mainHeader.appendChild(this.header2);
-  //
-  this.header3 = document.createElement('div');
-  this.header3.className = 'innerHeader';
-  this.mainHeader.appendChild(this.header3);
-  //Building subsections into the header
-  this.timerElement = document.createElement('div');
-  this.timerElement.className = 'timerElement';
-  this.timerElement.className = 'size';
-  this.header1.appendChild(this.timerElement);
-  //
-  this.scoreElement = document.createElement('div');
-  this.scoreElement.className = 'scoreElement';
-  this.scoreElement.className = 'size';
-  this.header1.appendChild(this.scoreElement);
-  //
-  this.nameElement = document.createElement('div');
-  this.nameElement.className = 'nameElement';
-  this.nameElement.className = 'size';
-  this.header2.appendChild(this.nameElement);
-  //
-  this.startButtonElement = document.createElement('div');
-  this.startButtonElement.className = 'startButtonElement';
-  this.startButtonElement.className = 'size';
-  this.header2.appendChild(this.startButtonElement);
-  //
-  this.restartButtonElement = document.createElement('div');
-  this.restartButtonElement.className = 'restartButtonElement';
-  this.restartButtonElement.className = 'size';
-  this.header3.appendChild(this.restartButtonElement);
-  //
-  this.resetElement = document.createElement('div');
-  this.resetElement.className = 'resetElement';
-  this.resetElement.className = 'size';
-  this.header3.appendChild(this.resetElement);
-  //Building the 3 sections into the main
-  this.messageElement = document.createElement('div');
-  this.messageElement.className = 'messageElement';
-  this.mainMain.appendChild(this.messageElement);
-  //
-  this.boardElement = document.createElement('div');
-  this.boardElement.className = 'boardElement';
-  this.mainMain.appendChild(this.boardElement);
-  //
-  this.levelElement = document.createElement('div');
-  this.levelElement.className = 'levelElement';
-  this.mainMain.appendChild(this.levelElement);
-  //Building the 2 sections into footer
-  this.bestScorers1Element = document.createElement('div');
-  this.bestScorers1Element.className = 'bestScorersElement';
-  this.mainFooter.appendChild(this.bestScorers1Element);
-  //
-  this.bestScorers2Element = document.createElement('div');
-  this.bestScorers2Element.className = 'bestScorersElement';
-  this.mainFooter.appendChild(this.bestScorers2Element);
-  // Timer space lavel
-  this.timerSpacePar = document.createElement('p');
-  this.timerSpacePar.className = 'timerSpacePar';
-  this.timerSpacePar.innerText = 'TIME:';
-  this.timerElement.appendChild(this.timerSpacePar);
-  //Building the timer space
-  this.timerSpace = document.createElement('div');
-  this.timerSpace.className = 'timerSpace';
-  this.timerElement.appendChild(this.timerSpace);
-  // Score space lavel
-  this.scoreSpacePar = document.createElement('p');
-  this.scoreSpacePar.className = 'scoreSpacePar';
-  this.scoreSpacePar.innerText = 'SCORE:';
-  this.scoreElement.appendChild(this.scoreSpacePar);
-  //Building the score space
-  this.scoreSpace = document.createElement('div');
-  this.scoreSpace.className = 'scoreSpace';
-  this.scoreElement.appendChild(this.scoreSpace);
-  //Building the buttons
-  //Start
-  this.startButton = document.createElement('button');
-  this.startButton.className = 'startButton';
-  this.startButton.className = 'sizeBut';
-  this.startButtonElement.appendChild(this.startButton);
-  //Restart
-  this.restartButton = document.createElement('button');
-  this.restartButton.className = 'restartButton';
-  this.restartButton.className = 'sizeBut';
-  this.restartButtonElement.appendChild(this.restartButton);
-  //Start
-  this.resetButton = document.createElement('button');
-  this.resetButton.className = 'resetButton';
-  this.resetButton.className = 'sizeBut';
-  this.resetElement.appendChild(this.resetButton);
-  //Building de play2 ICON
-  this.iconPlayButton2 = document.createElement('i');
-  this.iconPlayButton2.classList.add('fa-play-circle-o');
-  this.iconPlayButton2.classList.add('fa');
-  this.iconPlayButton2.classList.add('fa-2x');
-  this.iconPlayButton2.classList.add('iconPlayButton');
-  this.startButton.appendChild(this.iconPlayButton2);
-  //Building de replay ICON
-  this.iconRestartButton = document.createElement('i');
-  this.iconRestartButton.classList.add('fa-reply-all');
-  this.iconRestartButton.classList.add('fa');
-  this.iconRestartButton.classList.add('fa-2x');
-  this.iconRestartButton.classList.add('iconRestartButton');
-  this.restartButton.appendChild(this.iconRestartButton);
-  //Building de resetButton ICON
-  this.iconResetButton = document.createElement('i');
-  this.iconResetButton.classList.add('fa-hand-paper-o');
-  this.iconResetButton.classList.add('fa');
-  this.iconResetButton.classList.add('fa-2x');
-  this.iconResetButton.classList.add('iconResetButton');
-  this.resetButton.appendChild(this.iconResetButton);
-  //Building de form
-  this.nameElementPar = document.createElement('p');
-  this.nameElementPar.className = 'nameElementPar';
-  this.nameElementPar.innerText = 'NAME:';
-  this.nameElement.appendChild(this.nameElementPar);
-
-  this.nameElementInput = document.createElement('input');
-  this.nameElementInput.type = "text";
-  this.nameElementInput.className = 'nameElementInput';
-  this.nameElement.appendChild(this.nameElementInput);
-
-
-
-};;

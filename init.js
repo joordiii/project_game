@@ -1,7 +1,7 @@
 function init() {
   var app = new App();
-  /*app.buildWelcome();*/
-  app.buildMainScreen();
+  app.buildWelcome();
+  /*app.buildMainScreen();*/
 
 }
 
