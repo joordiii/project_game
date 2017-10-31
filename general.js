@@ -1,8 +1,12 @@
+"use strict";
+
 function App() {
   var self = this;
   self.state = '';
-  self.waterCount = null;
-  self.touchCount = null;
+  self.scoreSpace1 = null; //Water counter
+  self.waterC = 0;
+  self.scoreSpace2 = 0; //Hits counter
+  self.hitC = 0;
   self.level = [];
   self.selectedRec = null;
 
@@ -12,7 +16,7 @@ function App() {
   self.appMainPage = null;
   self.boardElement = null;
   self.gridContainer = null;
-  self.iDiv = null;
+  self.iDivImg = null;
   //RadioButtons
   self.inputRadioEasy = null;
   self.inputRadioMedium = null;
@@ -153,21 +157,23 @@ function App() {
     // Score space lavel1
     var scoreSpacePar1 = document.createElement('p');
     scoreSpacePar1.className = 'scoreSpacePar1';
-    scoreSpacePar1.innerText = 'SCORE:';
+    scoreSpacePar1.innerText = 'WATER:';
     scoreElement1.appendChild(scoreSpacePar1);
     //Building the score space
-    var scoreSpace1 = document.createElement('div');
-    scoreSpace1.className = 'scoreSpace1';
-    scoreElement1.appendChild(scoreSpace1);
+    self.scoreSpace1 = document.createElement('div');
+    self.scoreSpace1.className = 'scoreSpace1';
+    self.scoreSpace1.innerHTML = '0';
+    scoreElement1.appendChild(self.scoreSpace1);
     // Score space lavel2
-    var scoreSpacePar2 = document.createElement('p');
-    scoreSpacePar2.className = 'scoreSpacePar2';
-    scoreSpacePar2.innerText = 'SCORE:';
-    scoreElement2.appendChild(scoreSpacePar2);
+    self.scoreSpacePar2 = document.createElement('p');
+    self.scoreSpacePar2.className = 'scoreSpacePar2';
+    self.scoreSpacePar2.innerText = 'HITS:';
+    scoreElement2.appendChild(self.scoreSpacePar2);
     //Building the score space
-    var scoreSpace2 = document.createElement('div');
-    scoreSpace2.className = 'scoreSpace2';
-    scoreElement2.appendChild(scoreSpace2);
+    self.scoreSpace2 = document.createElement('div');
+    self.scoreSpace2.className = 'scoreSpace2';
+    self.scoreSpace2.innerHTML = '0';
+    scoreElement2.appendChild(self.scoreSpace2);
     //Building the buttons
     //Start
     var startButton = document.createElement('button');
@@ -185,26 +191,26 @@ function App() {
     resetButton.className = 'sizeBut';
     resetElement.appendChild(resetButton);
     //Building de play2 ICON
-    var iconPlayButton2 = document.createElement('i');
+    /*var iconPlayButton2 = document.createElement('i');
     iconPlayButton2.classList.add('fa-play-circle-o');
     iconPlayButton2.classList.add('fa');
     iconPlayButton2.classList.add('fa-2x');
     iconPlayButton2.classList.add('iconPlayButton');
-    startButton.appendChild(iconPlayButton2);
+    startButton.appendChild(iconPlayButton2);*/
     //Building de replay ICON
     var iconRestartButton = document.createElement('i');
-    iconRestartButton.classList.add('fa-reply-all');
+    /*iconRestartButton.classList.add('fa-reply-all');
     iconRestartButton.classList.add('fa');
     iconRestartButton.classList.add('fa-2x');
     iconRestartButton.classList.add('iconRestartButton');
-    restartButton.appendChild(iconRestartButton);
+    restartButton.appendChild(iconRestartButton);*/
     //Building de resetButton ICON
     var iconResetButton = document.createElement('i');
-    iconResetButton.classList.add('fa-hand-paper-o');
+    /*iconResetButton.classList.add('fa-hand-paper-o');
     iconResetButton.classList.add('fa');
     iconResetButton.classList.add('fa-2x');
     iconResetButton.classList.add('iconResetButton');
-    resetButton.appendChild(iconResetButton);
+    resetButton.appendChild(iconResetButton);*/
     //Building de form
     var nameElementPar = document.createElement('p');
     nameElementPar.className = 'nameElementPar';
@@ -272,24 +278,21 @@ function App() {
     for (var a = 0; a < 10; a++) {
       var fila = [];
       for (var b = 0; b < 10; b++) {
-        self.iDiv = document.createElement('div');
-        self.iDiv.className = 'iDiv';
-        self.iDiv.id = 'c' + a + b;
-        gridContainer.appendChild(self.iDiv);
-        fila.push(self.iDiv);
-        self.iDiv.addEventListener('click', flipCard);
+        var iDiv = document.createElement('div');
+        iDiv.className = 'iDiv';
+        iDiv.id = 'c' + a + b;
+        gridContainer.appendChild(iDiv);
+        fila.push(iDiv);
+        iDiv.addEventListener("click", self.flipCard);
       }
       taula.push(fila);
     }
     self.boardElement.appendChild(gridContainer);
   };
 
-  self.flipCard = function() {
-
-  };
-
   //Adding submarines to Div
   self.addSubmarineToDiv = function() {
+
     //Random array of 100 numbers
     var grid = [];
     while (grid.length < 100) {
@@ -307,16 +310,46 @@ function App() {
         idNumber = toStrPlusZero;
       }
       var div = document.getElementById('c' + idNumber);
-      var iDivImg = document.createElement('img');
-      iDivImg.setAttribute("src", "images/blue.jpg");
-      iDivImg.setAttribute("height", "100%");
-      iDivImg.setAttribute("width", "100%");
-      iDivImg.style.display = "none";
-      div.appendChild(iDivImg);
+      self.iDivImg = document.createElement('img');
+      self.iDivImg.className = 'submarine';
+      self.iDivImg.setAttribute("src", "images/submarine.png");
+      self.iDivImg.setAttribute("height", "100%");
+      self.iDivImg.setAttribute("width", "100%");
+      self.iDivImg.style.display = "none";
+      div.appendChild(self.iDivImg);
     }
   };
 
+  //Flip the Card
+  self.flipCard = function(event) {
+    console.log(event.currentTarget);
+    var target = event.currentTarget;
+    target.classList.remove('iDiv');
+    target.classList.add('iDivClicked');
+    if (target.firstChild) {
+      target.firstChild.style.display = "block";
+    }
+    //Add water counter
+    if (target.firstChild) {
+      self.waterC = self.waterC + 1;
+      self.scoreSpace1.innerHTML = self.waterC;
+    }
+    //Add hit counter
+    else {
+      self.hitC = self.hitC + 1;
+      self.scoreSpace2.innerHTML = self.hitC;
+    }
 
+  };
+  self.resetGame = function() {
+    //Counters to '0'
+    self.waterC = 0;
+    self.hitC = 0;
+    self.scoreSpace1.innerHTML = self.waterC;
+    self.scoreSpace2.innerHTML = self.hitC;
+    //Suffle and add submarines
+    self.addSubmarineToDiv();
+  };
 
 
 }

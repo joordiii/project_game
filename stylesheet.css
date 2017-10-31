@@ -188,6 +188,12 @@ html, body {
   outline: 1px solid black;
 }
 
+.iDivClicked {
+  height: 10%;
+  width: 10%;
+  outline: 1px solid black;
+}
+
 .sub {
   background-color: aqua;
   /*display:none;*/
