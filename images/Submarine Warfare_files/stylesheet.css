@@ -87,7 +87,6 @@ html, body {
 
 .timerSpacePar {
   margin-bottom: 4%;
-  font-size: 0.75em;
 }
 
 .scoreElementOuter {
@@ -118,7 +117,6 @@ html, body {
 
 .scoreSpacePar1 {
   margin-bottom: 4%;
-  font-size: 0.75em;
 }
 
 .scoreSpace1 {
@@ -134,7 +132,6 @@ html, body {
 
 .scoreSpacePar2 {
   margin-bottom: 4%;
-  font-size: 0.75em;
 }
 
 .scoreSpace2 {
@@ -152,7 +149,6 @@ html, body {
 
 .nameElementPar {
   margin-bottom: 7%;
-  font-size: 0.75em;
 }
 
 .nameElementInput {
@@ -161,15 +157,6 @@ html, body {
 }
 
 .startButtonElement {}
-
-.size .radioForm {
-  display: flex;
-  flex-direction: column;
-}
-
-.radioForm {
-  font-size: 0.5em;
-}
 
 .restartButtonElement {}
 
@@ -331,17 +318,5 @@ html, body {
   .bestScorersElement {
     width: auto;
     height: 50%;
-  }
-  .scoreSpace1 {
-    font-size: 2em;
-  }
-  .scoreSpace2 {
-    font-size: 2em;
-  }
-  .nameElementPar {
-    font-size: 1em;
-  }
-  .radioForm {
-    font-size: 1em;
   }
 }

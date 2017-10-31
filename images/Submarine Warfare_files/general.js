@@ -1,6 +1,6 @@
 "use strict";
 
-function App(difficultLevel) {
+function App() {
   var self = this;
   self.state = '';
   self.scoreSpace1 = null; //Water counter
@@ -18,15 +18,9 @@ function App(difficultLevel) {
   self.gridContainer = null;
   self.iDivImg = null;
   //RadioButtons
-  self.radios = null;
   self.inputRadioEasy = null;
   self.inputRadioMedium = null;
   self.inputRadioMedium = null;
-  //Level variable
-  self.levelMode = null;
-  self.level1 = null;
-  self.level2 = null;
-  self.level3 = null;
 
   //Initail Welcome
   self.buildWelcome = function() {
@@ -183,25 +177,46 @@ function App(difficultLevel) {
     scoreElement2.appendChild(self.scoreSpace2);
     //Building the buttons
     //Start
-    /*var startButton = document.createElement('button');
+    var startButton = document.createElement('button');
     startButton.className = 'startButton';
     startButton.className = 'sizeBut';
-    startButtonElement.appendChild(startButton);*/
+    startButtonElement.appendChild(startButton);
     //Restart
     var restartButton = document.createElement('button');
     restartButton.className = 'restartButton';
     restartButton.className = 'sizeBut';
-    restartButton.innerHTML = 'PLAY';
+    restartButton.innerHTML = 'RESTART'
     restartButtonElement.appendChild(restartButton);
     //Reset
-    /*var resetButton = document.createElement('button');
+    var resetButton = document.createElement('button');
     resetButton.className = 'resetButton';
     resetButton.className = 'sizeBut';
-    resetElement.appendChild(resetButton);*/
+    resetElement.appendChild(resetButton);
+    //Building de play2 ICON
+    /*var iconPlayButton2 = document.createElement('i');
+    iconPlayButton2.classList.add('fa-play-circle-o');
+    iconPlayButton2.classList.add('fa');
+    iconPlayButton2.classList.add('fa-2x');
+    iconPlayButton2.classList.add('iconPlayButton');
+    startButton.appendChild(iconPlayButton2);*/
+    //Building de replay ICON
+    var iconRestartButton = document.createElement('i');
+    /*iconRestartButton.classList.add('fa-reply-all');
+    iconRestartButton.classList.add('fa');
+    iconRestartButton.classList.add('fa-2x');
+    iconRestartButton.classList.add('iconRestartButton');
+    restartButton.appendChild(iconRestartButton);*/
+    //Building de resetButton ICON
+    var iconResetButton = document.createElement('i');
+    /*iconResetButton.classList.add('fa-hand-paper-o');
+    iconResetButton.classList.add('fa');
+    iconResetButton.classList.add('fa-2x');
+    iconResetButton.classList.add('iconResetButton');
+    resetButton.appendChild(iconResetButton);*/
     //Building de form
     var nameElementPar = document.createElement('p');
     nameElementPar.className = 'nameElementPar';
-    nameElementPar.innerText = 'PLAYER NAME:';
+    nameElementPar.innerText = 'NAME:';
     nameElement.appendChild(nameElementPar);
     //Input text
     var nameElementInput = document.createElement('input');
@@ -212,12 +227,11 @@ function App(difficultLevel) {
     //Easy
     self.inputRadioEasy = document.createElement('input');
     self.inputRadioEasy.type = "radio";
-    self.inputRadioEasy.name = "radioButton";
     self.inputRadioEasy.className = 'inputRadioEasy';
     self.inputRadioEasy.type = 'radio';
     self.inputRadioEasy.checked = 'true';
     var labelRadioEasy = document.createElement('label');
-    labelRadioEasy.innerHTML = ' ' + 'LEVEL EASY';
+    labelRadioEasy.innerHTML = 'LEVEL EASY';
     var pEasy = document.createElement('p');
     pEasy.className = 'easyBox';
     var radioFormLevel1 = document.createElement('form');
@@ -228,11 +242,10 @@ function App(difficultLevel) {
     //Medium
     self.inputRadioMedium = document.createElement('input');
     self.inputRadioMedium.type = "radio";
-    self.inputRadioMedium.name = "radioButton";
     self.inputRadioMedium.className = 'inputRadioMedium';
     self.inputRadioMedium.type = 'radio';
     var labelRadioMedium = document.createElement('label');
-    labelRadioMedium.innerHTML = ' ' + 'LEVEL MEDIUM';
+    labelRadioMedium.innerHTML = 'LEVEL MEDIUM';
     var pMedium = document.createElement('p');
     pMedium.className = 'mediumBox';
     var radioFormLevel2 = document.createElement('form');
@@ -243,11 +256,10 @@ function App(difficultLevel) {
     //Hard
     self.inputRadioHard = document.createElement('input');
     self.inputRadioHard.type = "radio";
-    self.inputRadioHard.name = "radioButton";
     self.inputRadioHard.className = 'inputRadioHard';
     self.inputRadioHard.type = 'radio';
     var labelRadioHard = document.createElement('label');
-    labelRadioHard.innerHTML = ' ' + 'LEVEL HARD';
+    labelRadioHard.innerHTML = 'LEVEL HARD';
     var pHard = document.createElement('p');
     pHard.className = 'hardBox';
     var radioFormLevel3 = document.createElement('form');
@@ -258,17 +270,6 @@ function App(difficultLevel) {
     //Building de grid
     self.buildGrid();
     self.addSubmarineToDiv();
-
-    self.level1 = document.getElementsByClassName('inputRadioEasy');
-    self.level1[0].addEventListener("click", self.levelSelection);
-
-    self.level2 = document.getElementsByClassName('inputRadioMedium');
-    self.level2[0].addEventListener("click", self.levelSelection);
-
-    self.level3 = document.getElementsByClassName('inputRadioHard');
-    self.level3[0].addEventListener("click", self.levelSelection);
-
-
   };
 
   //Build grid
@@ -296,8 +297,6 @@ function App(difficultLevel) {
     /*this.containerElement.removeChild(this.welcomePage);*/
     self.gridContainer.remove();
   };
-
-  //Funtion that add the EventListener to divs
 
 
   //Adding submarines to Div
@@ -342,12 +341,12 @@ function App(difficultLevel) {
     //Add water counter
     if (target.firstChild) {
       self.waterC = self.waterC + 1;
-      self.scoreSpace2.innerHTML = self.waterC;
+      self.scoreSpace1.innerHTML = self.waterC;
     }
     //Add hit counter
     else {
       self.hitC = self.hitC + 1;
-      self.scoreSpace1.innerHTML = self.hitC;
+      self.scoreSpace2.innerHTML = self.hitC;
     }
 
   };
@@ -362,25 +361,7 @@ function App(difficultLevel) {
     //Build grid and Suffle and add submarines
     self.buildGrid();
     self.addSubmarineToDiv();
-    self.levelSelection();
   };
-
-  //Select level
-
-  self.levelSelection = function() {
-    if (self.inputRadioEasy.checked) {
-      self.levelMode = 60;
-    }
-    if (self.inputRadioEasy.checked) {
-      self.levelMode = 45;
-    }
-    if (self.inputRadioEasy.checked) {
-      self.levelMode = 30;
-    }
-  };
-
-
-
 
 
 }

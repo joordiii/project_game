@@ -9,6 +9,7 @@ function App(difficultLevel) {
   self.hitC = 0;
   self.level = [];
   self.selectedRec = null;
+  self.idNumber = null;
 
   //DOM elements
   self.containerElement = document.getElementById('container');
@@ -183,21 +184,20 @@ function App(difficultLevel) {
     scoreElement2.appendChild(self.scoreSpace2);
     //Building the buttons
     //Start
-    /*var startButton = document.createElement('button');
-    startButton.className = 'startButton';
-    startButton.className = 'sizeBut';
-    startButtonElement.appendChild(startButton);*/
+
     //Restart
     var restartButton = document.createElement('button');
     restartButton.className = 'restartButton';
     restartButton.className = 'sizeBut';
     restartButton.innerHTML = 'PLAY';
     restartButtonElement.appendChild(restartButton);
+    restartButton.addEventListener('click', self.buildGrid);
     //Reset
-    /*var resetButton = document.createElement('button');
+    var resetButton = document.createElement('button');
     resetButton.className = 'resetButton';
     resetButton.className = 'sizeBut';
-    resetElement.appendChild(resetButton);*/
+    resetElement.appendChild(resetButton);
+    resetButton.addEventListener('click', self.destroyGrid);
     //Building de form
     var nameElementPar = document.createElement('p');
     nameElementPar.className = 'nameElementPar';
@@ -208,67 +208,50 @@ function App(difficultLevel) {
     nameElementInput.type = "text";
     nameElementInput.className = 'nameElementInput';
     nameElement.appendChild(nameElementInput);
+
     //Create Radio buttons (Level Selection)
-    //Easy
-    self.inputRadioEasy = document.createElement('input');
-    self.inputRadioEasy.type = "radio";
-    self.inputRadioEasy.name = "radioButton";
-    self.inputRadioEasy.className = 'inputRadioEasy';
-    self.inputRadioEasy.type = 'radio';
-    self.inputRadioEasy.checked = 'true';
+    var radioForm = document.createElement('form');
+    radioForm.className = 'radioForm';
+    startButtonElement.appendChild(radioForm);
+
+    var easyLev = document.createElement('input');
+    easyLev.className = 'easyLev';
+    easyLev.type = 'radio';
+    easyLev.name = 'group';
+    easyLev.value = 'EASY';
+    radioForm.appendChild(easyLev);
     var labelRadioEasy = document.createElement('label');
     labelRadioEasy.innerHTML = ' ' + 'LEVEL EASY';
-    var pEasy = document.createElement('p');
-    pEasy.className = 'easyBox';
-    var radioFormLevel1 = document.createElement('form');
-    pEasy.appendChild(self.inputRadioEasy);
-    pEasy.appendChild(labelRadioEasy);
-    radioFormLevel1.appendChild(pEasy);
-    levelElement.appendChild(radioFormLevel1);
-    //Medium
-    self.inputRadioMedium = document.createElement('input');
-    self.inputRadioMedium.type = "radio";
-    self.inputRadioMedium.name = "radioButton";
-    self.inputRadioMedium.className = 'inputRadioMedium';
-    self.inputRadioMedium.type = 'radio';
+    radioForm.appendChild(labelRadioEasy);
+
+    var mediumLev = document.createElement('input');
+    mediumLev.className = 'mediumLev';
+    mediumLev.type = 'radio';
+    mediumLev.name = 'group';
+    mediumLev.value = 'MEDIUM';
+    radioForm.appendChild(mediumLev);
     var labelRadioMedium = document.createElement('label');
     labelRadioMedium.innerHTML = ' ' + 'LEVEL MEDIUM';
-    var pMedium = document.createElement('p');
-    pMedium.className = 'mediumBox';
-    var radioFormLevel2 = document.createElement('form');
-    pMedium.appendChild(self.inputRadioMedium);
-    pMedium.appendChild(labelRadioMedium);
-    radioFormLevel2.appendChild(pMedium);
-    levelElement.appendChild(radioFormLevel2);
-    //Hard
-    self.inputRadioHard = document.createElement('input');
-    self.inputRadioHard.type = "radio";
-    self.inputRadioHard.name = "radioButton";
-    self.inputRadioHard.className = 'inputRadioHard';
-    self.inputRadioHard.type = 'radio';
+    radioForm.appendChild(labelRadioMedium);
+
+    var hardLev = document.createElement('input');
+    hardLev.className = 'hardLev';
+    hardLev.type = 'radio';
+    hardLev.name = 'group';
+    hardLev.value = 'HARD';
+    radioForm.appendChild(hardLev);
     var labelRadioHard = document.createElement('label');
     labelRadioHard.innerHTML = ' ' + 'LEVEL HARD';
-    var pHard = document.createElement('p');
-    pHard.className = 'hardBox';
-    var radioFormLevel3 = document.createElement('form');
-    pHard.appendChild(self.inputRadioHard);
-    pHard.appendChild(labelRadioHard);
-    radioFormLevel3.appendChild(pHard);
-    levelElement.appendChild(radioFormLevel3);
+    radioForm.appendChild(labelRadioHard)
+    //Easy
+
+    //Medium
+
+    //Hard
+
     //Building de grid
-    self.buildGrid();
-    self.addSubmarineToDiv();
-
-    self.level1 = document.getElementsByClassName('inputRadioEasy');
-    self.level1[0].addEventListener("click", self.levelSelection);
-
-    self.level2 = document.getElementsByClassName('inputRadioMedium');
-    self.level2[0].addEventListener("click", self.levelSelection);
-
-    self.level3 = document.getElementsByClassName('inputRadioHard');
-    self.level3[0].addEventListener("click", self.levelSelection);
-
-
+    //self.buildGrid();
+    //self.addSubmarineToDiv();
   };
 
   //Build grid
@@ -289,6 +272,7 @@ function App(difficultLevel) {
       taula.push(fila);
     }
     self.boardElement.appendChild(self.gridContainer);
+    self.addSubmarineToDiv();
   };
 
   //Destroy grid
@@ -312,14 +296,15 @@ function App(difficultLevel) {
     }
 
     //Extracting 60 numbers from random array and giving them and image (submarine)
+
     for (var i = 0; i < 60; i++) {
-      var idNumber = grid[i];
-      if (idNumber < 10) {
-        var toStr = idNumber.toString();
+      self.idNumber = grid[i];
+      if (self.idNumber < 10) {
+        var toStr = self.idNumber.toString();
         var toStrPlusZero = '0' + toStr;
-        idNumber = toStrPlusZero;
+        self.idNumber = toStrPlusZero;
       }
-      var div = document.getElementById('c' + idNumber);
+      var div = document.getElementById('c' + self.idNumber);
       self.iDivImg = document.createElement('img');
       self.iDivImg.className = 'submarine';
       self.iDivImg.setAttribute("src", "images/submarine.png");
@@ -332,7 +317,6 @@ function App(difficultLevel) {
 
   //Flip the Card
   self.flipCard = function(event) {
-    console.log(event.currentTarget);
     var target = event.currentTarget;
     target.classList.remove('iDiv');
     target.classList.add('iDivClicked');
@@ -362,12 +346,12 @@ function App(difficultLevel) {
     //Build grid and Suffle and add submarines
     self.buildGrid();
     self.addSubmarineToDiv();
-    self.levelSelection();
+    //self.levelSelection();
   };
 
   //Select level
 
-  self.levelSelection = function() {
+  /*self.levelSelection = function() {
     if (self.inputRadioEasy.checked) {
       self.levelMode = 60;
     }
@@ -377,10 +361,6 @@ function App(difficultLevel) {
     if (self.inputRadioEasy.checked) {
       self.levelMode = 30;
     }
-  };
-
-
-
-
+  };*/
 
 }
