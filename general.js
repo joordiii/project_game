@@ -119,6 +119,7 @@ function App() {
     var restartButtonElement = document.createElement('div');
     restartButtonElement.className = 'restartButtonElement';
     restartButtonElement.className = 'size';
+    restartButtonElement.addEventListener('click', self.resetGame);
     header3.appendChild(restartButtonElement);
     //
     var resetElement = document.createElement('div');
@@ -184,8 +185,9 @@ function App() {
     var restartButton = document.createElement('button');
     restartButton.className = 'restartButton';
     restartButton.className = 'sizeBut';
+    restartButton.innerHTML = 'RESTART'
     restartButtonElement.appendChild(restartButton);
-    //Start
+    //Reset
     var resetButton = document.createElement('button');
     resetButton.className = 'resetButton';
     resetButton.className = 'sizeBut';
@@ -272,8 +274,8 @@ function App() {
 
   //Build grid
   self.buildGrid = function() {
-    var gridContainer = document.createElement('div');
-    gridContainer.className = 'gridContainer';
+    self.gridContainer = document.createElement('div');
+    self.gridContainer.className = 'gridContainer';
     var taula = [];
     for (var a = 0; a < 10; a++) {
       var fila = [];
@@ -281,14 +283,21 @@ function App() {
         var iDiv = document.createElement('div');
         iDiv.className = 'iDiv';
         iDiv.id = 'c' + a + b;
-        gridContainer.appendChild(iDiv);
+        self.gridContainer.appendChild(iDiv);
         fila.push(iDiv);
         iDiv.addEventListener("click", self.flipCard);
       }
       taula.push(fila);
     }
-    self.boardElement.appendChild(gridContainer);
+    self.boardElement.appendChild(self.gridContainer);
   };
+
+  //Destroy grid
+  self.destroyGrid = function() {
+    /*this.containerElement.removeChild(this.welcomePage);*/
+    self.gridContainer.remove();
+  };
+
 
   //Adding submarines to Div
   self.addSubmarineToDiv = function() {
@@ -347,7 +356,10 @@ function App() {
     self.hitC = 0;
     self.scoreSpace1.innerHTML = self.waterC;
     self.scoreSpace2.innerHTML = self.hitC;
-    //Suffle and add submarines
+    //Destroy grid
+    self.destroyGrid();
+    //Build grid and Suffle and add submarines
+    self.buildGrid();
     self.addSubmarineToDiv();
   };
 
