@@ -32,6 +32,10 @@ function App(difficultLevel) {
   //Level variable
   self.levelMode = null;
   self.level = null;
+  self.hitC = null;
+  self.waterC = null;
+  //Sound
+  self.createjs = null;
 
 
   //Initail Welcome
@@ -166,7 +170,7 @@ function App(difficultLevel) {
     // Score space lavel1
     var scoreSpacePar1 = document.createElement('p');
     scoreSpacePar1.className = 'scoreSpacePar1';
-    scoreSpacePar1.innerText = 'HITS:';
+    scoreSpacePar1.innerText = 'WATER:';
     scoreElement1.appendChild(scoreSpacePar1);
     //Building the score space
     self.scoreSpace1 = document.createElement('div');
@@ -176,7 +180,7 @@ function App(difficultLevel) {
     // Score space lavel2
     self.scoreSpacePar2 = document.createElement('p');
     self.scoreSpacePar2.className = 'scoreSpacePar2';
-    self.scoreSpacePar2.innerText = 'WATER:';
+    self.scoreSpacePar2.innerText = 'HITS:';
     scoreElement2.appendChild(self.scoreSpacePar2);
     //Building the score space
     self.scoreSpace2 = document.createElement('div');
@@ -284,8 +288,11 @@ function App(difficultLevel) {
     //When the Game Starts --> Enabling RESET button -- Disabling Play button
     self.resetButton.disabled = false;
     self.restartButton.disabled = true;
+    self.easyLev.disabled = true;
+    self.mediumLev.disabled = true;
+    self.hardLev.disabled = true;
     //Adding the Game Over message at the end of the Game
-    self.gameOver();
+    //self.gameOver();
   };
 
   //Destroy grid
@@ -294,6 +301,9 @@ function App(difficultLevel) {
     self.gridContainer.remove();
     self.resetButton.disabled = true;
     self.restartButton.disabled = false;
+    self.easyLev.disabled = false;
+    self.mediumLev.disabled = false;
+    self.hardLev.disabled = false;
   };
 
   //Funtion that add the EventListener to divs
@@ -340,20 +350,21 @@ function App(difficultLevel) {
     }
     //Add water counter
     if (target.firstChild) {
-      self.waterC = self.waterC + 1;
-      self.scoreSpace1.innerHTML = self.waterC;
+      self.hitC = self.hitC + 1;
+      self.scoreSpace2.innerHTML = self.hitC;
     }
     //Add hit counter
     else {
-      self.hitC = self.hitC + 1;
-      self.scoreSpace2.innerHTML = self.hitC;
+      self.waterC = self.waterC + 1;
+      self.scoreSpace1.innerHTML = self.waterC;
+      //self.playSound();
     }
     //Counting to Display the Game Over message at the end
     if ((self.level / 5) === self.hitC) {
       //Building the Message
       var message = document.createElement('div');
       message.className = 'message';
-      message.innerHTML = 'GAME OVER ' + 'you got ' + self.hitC + ' hits ' + 'and ' + self.waterC + 'water attempts';
+      message.innerHTML = 'GAME OVER ' + 'you got ' + self.hitC + ' hits ' + 'and ' + self.waterC + ' water attempts';
       self.levelElement.appendChild(message);
     }
   };
@@ -371,6 +382,9 @@ function App(difficultLevel) {
     //Build grid and Suffle and add submarines
     self.buildGrid();
     self.addSubmarineToDiv();
+    /*self.easyLev.disabled = false;
+    self.mediumLev.disabled = false;
+    self.hardLev.disabled = false;*/
   };
 
   //Select level
@@ -393,7 +407,7 @@ function App(difficultLevel) {
     }
   };
 
-  self.gameOver = function() {
+  /*self.gameOver = function() {
     var levelS = self.level / 5;
     if (levelS === self.hitC) {
       //Building the Message
@@ -402,16 +416,7 @@ function App(difficultLevel) {
       message.innerHTML = 'GAME OVER ' + 'you got ' + self.hitC + ' hits ' + 'and ' + self.waterC + 'water attempts';
       self.levelElement.appendChild(message);
     }
-  };
-
-  /*var soundID = "Thunder";
-
-  self.loadSound = function() {
-    self.createjs.Sound.registerSound("assets/thunder.ogg", soundID);
-  };
-
-  self.playSound = function() {
-    self.createjs.Sound.play(soundID);
   };*/
+
 
 }
