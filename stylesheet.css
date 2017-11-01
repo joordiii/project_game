@@ -29,7 +29,7 @@ html, body {
 .welcome {
   height: 100%;
   width: 100%;
-  background-image: url('images/Background_test.png');
+  background-image: url('images/submarine_background3.jpg');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -276,6 +276,12 @@ html, body {
   flex-direction: row-reverse;
   justify-content: space-around;
   align-items: center;
+}
+
+button:disabled, button[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
 }
 
 .easyBox {}

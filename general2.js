@@ -18,16 +18,20 @@ function App(difficultLevel) {
   self.boardElement = null;
   self.gridContainer = null;
   self.iDivImg = null;
+  self.restartButton = null;
+  self.resetButton = null;
   //RadioButtons
   self.radios = null;
   self.inputRadioEasy = null;
   self.inputRadioMedium = null;
   self.inputRadioMedium = null;
+  self.easyLev = null;
+  self.mediumLev = null;
+  self.hardLev = null;
   //Level variable
   self.levelMode = null;
-  self.level1 = null;
-  self.level2 = null;
-  self.level3 = null;
+  self.level = null;
+
 
   //Initail Welcome
   self.buildWelcome = function() {
@@ -41,11 +45,6 @@ function App(difficultLevel) {
     self.welcomePage.appendChild(welcomeButton);
     //Afegeixo el eventListener al Botó
     welcomeButton.addEventListener("click", self.buildMainScreen);
-    //welcomeButton.onclick = self.buildMainScreen();
-    //Building de play ICON
-    var iconPlayButton = document.createElement('i');
-    iconPlayButton.classList.add('fa-play-circle-o', 'fa', 'fa-4x', 'iconPlayButton');
-    welcomeButton.innerHTML = iconPlayButton;
     //Building the text PLAY
     var textPlayButton = document.createTextNode('PLAY');
     var paragraphPlayButton = document.createElement('p');
@@ -185,19 +184,23 @@ function App(difficultLevel) {
     //Building the buttons
     //Start
 
-    //Restart
-    var restartButton = document.createElement('button');
-    restartButton.className = 'restartButton';
-    restartButton.className = 'sizeBut';
-    restartButton.innerHTML = 'PLAY';
-    restartButtonElement.appendChild(restartButton);
-    restartButton.addEventListener('click', self.buildGrid);
+    //Restart ---->>> Now it's Play Button
+    self.restartButton = document.createElement('button');
+    self.restartButton.className = 'restartButton';
+    self.restartButton.className = 'sizeBut';
+    self.restartButton.id = 'playButton';
+    self.restartButton.innerHTML = 'PLAY';
+    restartButtonElement.appendChild(self.restartButton);
+    self.restartButton.addEventListener('click', self.buildGrid);
     //Reset
-    var resetButton = document.createElement('button');
-    resetButton.className = 'resetButton';
-    resetButton.className = 'sizeBut';
-    resetElement.appendChild(resetButton);
-    resetButton.addEventListener('click', self.destroyGrid);
+    self.resetButton = document.createElement('button');
+    self.resetButton.className = 'resetButton';
+    self.resetButton.className = 'sizeBut';
+    self.resetButton.id = 'resetButton';
+    self.resetButton.innerHTML = 'RESET';
+    self.resetButton.disabled = true;
+    resetElement.appendChild(self.resetButton);
+    self.resetButton.addEventListener('click', self.destroyGrid);
     //Building de form
     var nameElementPar = document.createElement('p');
     nameElementPar.className = 'nameElementPar';
@@ -214,35 +217,39 @@ function App(difficultLevel) {
     radioForm.className = 'radioForm';
     startButtonElement.appendChild(radioForm);
 
-    var easyLev = document.createElement('input');
-    easyLev.className = 'easyLev';
-    easyLev.type = 'radio';
-    easyLev.name = 'group';
-    easyLev.value = 'EASY';
-    radioForm.appendChild(easyLev);
+    self.easyLev = document.createElement('input');
+    self.easyLev.className = 'easyLev';
+    self.easyLev.id = 'radio1';
+    self.easyLev.type = 'radio';
+    self.easyLev.name = 'group';
+    self.easyLev.value = 'EASY';
+    self.easyLev.checked = true;
+    radioForm.appendChild(self.easyLev);
     var labelRadioEasy = document.createElement('label');
     labelRadioEasy.innerHTML = ' ' + 'LEVEL EASY';
     radioForm.appendChild(labelRadioEasy);
 
-    var mediumLev = document.createElement('input');
-    mediumLev.className = 'mediumLev';
-    mediumLev.type = 'radio';
-    mediumLev.name = 'group';
-    mediumLev.value = 'MEDIUM';
-    radioForm.appendChild(mediumLev);
+    self.mediumLev = document.createElement('input');
+    self.mediumLev.className = 'mediumLev';
+    self.mediumLev.id = 'radio2';
+    self.mediumLev.type = 'radio';
+    self.mediumLev.name = 'group';
+    self.mediumLev.value = 'MEDIUM';
+    radioForm.appendChild(self.mediumLev);
     var labelRadioMedium = document.createElement('label');
     labelRadioMedium.innerHTML = ' ' + 'LEVEL MEDIUM';
     radioForm.appendChild(labelRadioMedium);
 
-    var hardLev = document.createElement('input');
-    hardLev.className = 'hardLev';
-    hardLev.type = 'radio';
-    hardLev.name = 'group';
-    hardLev.value = 'HARD';
-    radioForm.appendChild(hardLev);
+    self.hardLev = document.createElement('input');
+    self.hardLev.className = 'hardLev';
+    self.hardLev.id = 'radio3';
+    self.hardLev.type = 'radio';
+    self.hardLev.name = 'group';
+    self.hardLev.value = 'HARD';
+    radioForm.appendChild(self.hardLev);
     var labelRadioHard = document.createElement('label');
     labelRadioHard.innerHTML = ' ' + 'LEVEL HARD';
-    radioForm.appendChild(labelRadioHard)
+    radioForm.appendChild(labelRadioHard);
     //Easy
 
     //Medium
@@ -272,13 +279,17 @@ function App(difficultLevel) {
       taula.push(fila);
     }
     self.boardElement.appendChild(self.gridContainer);
-    self.addSubmarineToDiv();
+    //When the Game Starts --> Enabling RESET button -- Disabling Play button
+    self.resetButton.disabled = false;
+    self.restartButton.disabled = true;
   };
 
   //Destroy grid
   self.destroyGrid = function() {
     /*this.containerElement.removeChild(this.welcomePage);*/
     self.gridContainer.remove();
+    self.resetButton.disabled = true;
+    self.restartButton.disabled = false;
   };
 
   //Funtion that add the EventListener to divs
@@ -297,7 +308,7 @@ function App(difficultLevel) {
 
     //Extracting 60 numbers from random array and giving them and image (submarine)
 
-    for (var i = 0; i < 60; i++) {
+    for (var i = 0; i < self.level; i++) {
       self.idNumber = grid[i];
       if (self.idNumber < 10) {
         var toStr = self.idNumber.toString();
@@ -343,24 +354,36 @@ function App(difficultLevel) {
     self.scoreSpace2.innerHTML = self.hitC;
     //Destroy grid
     self.destroyGrid();
+    //Select level, used to buid grid with appropiate number of submarines
+    self.selectLevel();
     //Build grid and Suffle and add submarines
     self.buildGrid();
     self.addSubmarineToDiv();
-    //self.levelSelection();
+
   };
 
   //Select level
 
-  /*self.levelSelection = function() {
-    if (self.inputRadioEasy.checked) {
-      self.levelMode = 60;
+  self.selectLevel = function() {
+    var l1 = document.getElementById('radio1');
+    var l2 = document.getElementById('radio2');
+    var l3 = document.getElementById('radio3');
+    if (l1.checked) {
+      self.level = 60;
     }
-    if (self.inputRadioEasy.checked) {
-      self.levelMode = 45;
+    if (l2.checked) {
+      self.level = 45;
     }
-    if (self.inputRadioEasy.checked) {
-      self.levelMode = 30;
+    if (l3.checked) {
+      self.level = 30;
     }
-  };*/
+    if (l1.checked === false && l2.checked === false && l3.checked === false) {
+      window.alert('You must chose a level');
+      //self.destroyWelcome();
+      //self.buildMainScreen();
+    }
+  };
+
+
 
 }

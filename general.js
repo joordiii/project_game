@@ -193,6 +193,7 @@ function App(difficultLevel) {
     restartButton.className = 'sizeBut';
     restartButton.innerHTML = 'PLAY';
     restartButtonElement.appendChild(restartButton);
+
     //Reset
     /*var resetButton = document.createElement('button');
     resetButton.className = 'resetButton';
@@ -214,6 +215,7 @@ function App(difficultLevel) {
     self.inputRadioEasy.type = "radio";
     self.inputRadioEasy.name = "radioButton";
     self.inputRadioEasy.className = 'inputRadioEasy';
+    self.inputRadioEasy.id = 'radio1';
     self.inputRadioEasy.type = 'radio';
     self.inputRadioEasy.checked = 'true';
     var labelRadioEasy = document.createElement('label');
@@ -230,6 +232,7 @@ function App(difficultLevel) {
     self.inputRadioMedium.type = "radio";
     self.inputRadioMedium.name = "radioButton";
     self.inputRadioMedium.className = 'inputRadioMedium';
+    self.inputRadioMedium.id = 'radio2';
     self.inputRadioMedium.type = 'radio';
     var labelRadioMedium = document.createElement('label');
     labelRadioMedium.innerHTML = ' ' + 'LEVEL MEDIUM';
@@ -245,6 +248,7 @@ function App(difficultLevel) {
     self.inputRadioHard.type = "radio";
     self.inputRadioHard.name = "radioButton";
     self.inputRadioHard.className = 'inputRadioHard';
+    self.inputRadioHard.id = 'radio3';
     self.inputRadioHard.type = 'radio';
     var labelRadioHard = document.createElement('label');
     labelRadioHard.innerHTML = ' ' + 'LEVEL HARD';
@@ -332,7 +336,7 @@ function App(difficultLevel) {
 
   //Flip the Card
   self.flipCard = function(event) {
-    console.log(event.currentTarget);
+    //console.log(event.currentTarget);
     var target = event.currentTarget;
     target.classList.remove('iDiv');
     target.classList.add('iDivClicked');
