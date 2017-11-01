@@ -70,6 +70,19 @@ function App(difficultLevel) {
     self.welcomePage.remove();
   };
 
+  //Reset
+  self.reset = function() {
+    self.destroyMain();
+    self.buildMainScreen();
+    self.firstTime = true;
+  };
+
+
+  //Destroy main page
+  self.destroyMain = function() {
+    self.appMainPage.remove();
+  };
+
   //Play, Build main Screen
   self.buildMainScreen = function() {
     //Destroy welcomePage
@@ -136,6 +149,7 @@ function App(difficultLevel) {
     var restartButtonElement = document.createElement('div');
     restartButtonElement.className = 'restartButtonElement';
     restartButtonElement.className = 'size';
+    //restartButtonElement.addEventListener('click', self.resetGame);
     restartButtonElement.addEventListener('click', self.resetGame);
     header3.appendChild(restartButtonElement);
     //
@@ -212,7 +226,8 @@ function App(difficultLevel) {
     self.resetButton.innerHTML = 'RESET';
     self.resetButton.disabled = true;
     resetElement.appendChild(self.resetButton);
-    self.resetButton.addEventListener('click', self.destroyGrid);
+    //self.resetButton.addEventListener('click', self.destroyGrid);
+    self.resetButton.addEventListener('click', self.reset);
     //Building de form
     var nameElementPar = document.createElement('p');
     nameElementPar.className = 'nameElementPar';
@@ -265,15 +280,10 @@ function App(difficultLevel) {
     labelRadioHard.innerHTML = ' ' + 'LEVEL HARD';
     radioForm.appendChild(labelRadioHard);
     self.nameElementInput.disabled = false;
-    //Easy
 
-    //Medium
 
-    //Hard
 
-    //Building de grid
-    //self.buildGrid();
-    //self.addSubmarineToDiv();
+
   };
 
   //Build grid
@@ -356,7 +366,6 @@ function App(difficultLevel) {
       //Building the Message
       if (self.firstTime) {
         self.firstTime = false;
-        console.log(self.firstTime);
 
         self.buildMessage('GAME OVER ' + 'you got ' + self.player.hitC + ' hits ' + 'in ' + (self.player.hitC + self.player.waterC) + ' attempts');
         //Getting waters and hits the object
@@ -409,9 +418,6 @@ function App(difficultLevel) {
     //Build grid and Suffle and add submarines
     self.buildGrid();
     self.addSubmarineToDiv();
-    //Destroying the message
-    self.message.remove();
-
   };
 
   //Select level
