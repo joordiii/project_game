@@ -20,6 +20,7 @@ function App(difficultLevel) {
   self.iDivImg = null;
   self.restartButton = null;
   self.resetButton = null;
+  self.levelElement = null;
   //RadioButtons
   self.radios = null;
   self.inputRadioEasy = null;
@@ -141,9 +142,9 @@ function App(difficultLevel) {
     self.boardElement.className = 'boardElement';
     mainMain.appendChild(self.boardElement);
     //
-    var levelElement = document.createElement('div');
-    levelElement.className = 'levelElement';
-    mainMain.appendChild(levelElement);
+    self.levelElement = document.createElement('div');
+    self.levelElement.className = 'levelElement';
+    mainMain.appendChild(self.levelElement);
     //Building the 2 sections into footer
     var bestScorers1Element = document.createElement('div');
     bestScorers1Element.className = 'bestScorersElement';
@@ -155,6 +156,7 @@ function App(difficultLevel) {
     // Timer space lavel
     var timerSpacePar = document.createElement('p');
     timerSpacePar.className = 'timerSpacePar';
+    timerSpacePar.id = 'timer';
     timerSpacePar.innerText = 'TIME:';
     timerElement.appendChild(timerSpacePar);
     //Building the timer space
@@ -164,7 +166,7 @@ function App(difficultLevel) {
     // Score space lavel1
     var scoreSpacePar1 = document.createElement('p');
     scoreSpacePar1.className = 'scoreSpacePar1';
-    scoreSpacePar1.innerText = 'WATER:';
+    scoreSpacePar1.innerText = 'HITS:';
     scoreElement1.appendChild(scoreSpacePar1);
     //Building the score space
     self.scoreSpace1 = document.createElement('div');
@@ -174,7 +176,7 @@ function App(difficultLevel) {
     // Score space lavel2
     self.scoreSpacePar2 = document.createElement('p');
     self.scoreSpacePar2.className = 'scoreSpacePar2';
-    self.scoreSpacePar2.innerText = 'HITS:';
+    self.scoreSpacePar2.innerText = 'WATER:';
     scoreElement2.appendChild(self.scoreSpacePar2);
     //Building the score space
     self.scoreSpace2 = document.createElement('div');
@@ -282,6 +284,8 @@ function App(difficultLevel) {
     //When the Game Starts --> Enabling RESET button -- Disabling Play button
     self.resetButton.disabled = false;
     self.restartButton.disabled = true;
+    //Adding the Game Over message at the end of the Game
+    self.gameOver();
   };
 
   //Destroy grid
@@ -337,15 +341,23 @@ function App(difficultLevel) {
     //Add water counter
     if (target.firstChild) {
       self.waterC = self.waterC + 1;
-      self.scoreSpace2.innerHTML = self.waterC;
+      self.scoreSpace1.innerHTML = self.waterC;
     }
     //Add hit counter
     else {
       self.hitC = self.hitC + 1;
-      self.scoreSpace1.innerHTML = self.hitC;
+      self.scoreSpace2.innerHTML = self.hitC;
     }
-
+    //Counting to Display the Game Over message at the end
+    if ((self.level / 5) === self.hitC) {
+      //Building the Message
+      var message = document.createElement('div');
+      message.className = 'message';
+      message.innerHTML = 'GAME OVER ' + 'you got ' + self.hitC + ' hits ' + 'and ' + self.waterC + 'water attempts';
+      self.levelElement.appendChild(message);
+    }
   };
+
   self.resetGame = function() {
     //Counters to '0'
     self.waterC = 0;
@@ -359,7 +371,6 @@ function App(difficultLevel) {
     //Build grid and Suffle and add submarines
     self.buildGrid();
     self.addSubmarineToDiv();
-
   };
 
   //Select level
@@ -379,11 +390,28 @@ function App(difficultLevel) {
     }
     if (l1.checked === false && l2.checked === false && l3.checked === false) {
       window.alert('You must chose a level');
-      //self.destroyWelcome();
-      //self.buildMainScreen();
     }
   };
 
+  self.gameOver = function() {
+    var levelS = self.level / 5;
+    if (levelS === self.hitC) {
+      //Building the Message
+      var message = document.createElement('div');
+      message.className = 'message';
+      message.innerHTML = 'GAME OVER ' + 'you got ' + self.hitC + ' hits ' + 'and ' + self.waterC + 'water attempts';
+      self.levelElement.appendChild(message);
+    }
+  };
 
+  /*var soundID = "Thunder";
+
+  self.loadSound = function() {
+    self.createjs.Sound.registerSound("assets/thunder.ogg", soundID);
+  };
+
+  self.playSound = function() {
+    self.createjs.Sound.play(soundID);
+  };*/
 
 }
