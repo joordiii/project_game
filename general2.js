@@ -4,11 +4,10 @@ function App(difficultLevel) {
   var self = this;
   self.state = '';
   self.scoreSpace1 = null; //Water counter
-  self.waterC = 0;
   self.scoreSpace2 = 0; //Hits counter
-  self.hitC = 0;
   self.level = [];
   self.idNumber = null;
+  self.firstTime = true;
 
   //DOM elements
   self.containerElement = document.getElementById('container');
@@ -20,6 +19,7 @@ function App(difficultLevel) {
   self.restartButton = null;
   self.resetButton = null;
   self.levelElement = null;
+  self.message = null;
   //RadioButtons
   self.radios = null;
   self.inputRadioEasy = null;
@@ -301,18 +301,17 @@ function App(difficultLevel) {
     self.mediumLev.disabled = true;
     self.hardLev.disabled = true;
     self.nameElementInput.disabled = true;
-    self.getName();
   };
 
   //Destroy grid
   self.destroyGrid = function() {
-    /*this.containerElement.removeChild(this.welcomePage);*/
     self.gridContainer.remove();
     self.resetButton.disabled = true;
     self.restartButton.disabled = false;
     self.easyLev.disabled = false;
     self.mediumLev.disabled = false;
     self.hardLev.disabled = false;
+
   };
 
 
@@ -350,45 +349,59 @@ function App(difficultLevel) {
   //Flip the Card
   self.flipCard = function(event) {
     var target = event.currentTarget;
+
     //First 'if' is to prevent the box to be clicked twice and count twice
-    if (target.className !== 'iDivClicked') {
-      target.classList.remove('iDiv');
-      target.classList.add('iDivClicked');
-      if (target.firstChild) {
-        target.firstChild.style.display = "block";
-      }
-      //Add hits counter
-      if (target.firstChild) {
-        self.hitC = self.hitC + 1;
-        self.scoreSpace2.innerHTML = self.hitC;
-        //self.playSound();
-      }
-      //Add water counter
-      else {
-        self.waterC = self.waterC + 1;
-        self.scoreSpace1.innerHTML = self.waterC;
-        //self.playSound();
-      }
-      //Counting to Display the Game Over message at the end
-      if ((self.level) === self.hitC) {
-        //Building the Message
-        var message = document.createElement('div');
-        message.className = 'message';
-        message.innerHTML = 'GAME OVER ' + 'you got ' + self.hitC + ' hits ' + 'and ' + self.waterC + ' water attempts';
-        self.levelElement.appendChild(message);
+
+    if ((2) === self.player.hitC) {
+      //Building the Message
+      if (self.firstTime) {
+        self.firstTime = false;
+        console.log(self.firstTime);
+
+        self.buildMessage('GAME OVER ' + 'you got ' + self.player.hitC + ' hits ' + 'in ' + (self.player.hitC + self.player.waterC) + ' attempts');
         //Getting waters and hits the object
-        self.getWaterAndHits();
-        self.players.push(self.player);
+        self.getNameAndWaterAndHits(self.player.waterC, self.player.hitC);
       }
+    } else {
+
+      if (target.className !== 'iDivClicked') {
+        target.classList.remove('iDiv');
+        target.classList.add('iDivClicked');
+        if (target.firstChild) {
+          target.firstChild.style.display = "block";
+        }
+        //Add hits counter
+        if (target.firstChild) {
+          self.player.hitC = self.player.hitC + 1;
+          self.scoreSpace2.innerHTML = self.player.hitC;
+          //self.playSound();
+        }
+        //Add water counter
+        else {
+          self.player.waterC = self.player.waterC + 1;
+          self.scoreSpace1.innerHTML = self.player.waterC;
+          //self.playSound();
+        }
+        //Counting to Display the Game Over message at the end
+      }
+
     }
+  };
+
+  self.buildMessage = function(textDisplay) {
+    self.message = document.createElement('div');
+    self.message.className = 'message';
+    self.message.id = 'messageId';
+    self.message.innerHTML = textDisplay;
+    self.levelElement.appendChild(self.message);
   };
 
   self.resetGame = function() {
     //Counters to '0'
-    self.waterC = 0;
-    self.hitC = 0;
-    self.scoreSpace1.innerHTML = self.waterC;
-    self.scoreSpace2.innerHTML = self.hitC;
+    self.player.waterC = 0;
+    self.player.hitC = 0;
+    self.scoreSpace1.innerHTML = self.player.waterC;
+    self.scoreSpace2.innerHTML = self.player.hitC;
     //Destroy grid
     self.destroyGrid();
     //Select level, used to buid grid with appropiate number of submarines
@@ -396,7 +409,9 @@ function App(difficultLevel) {
     //Build grid and Suffle and add submarines
     self.buildGrid();
     self.addSubmarineToDiv();
-    //Getting the Name of the player
+    //Destroying the message
+    self.message.remove();
+
   };
 
   //Select level
@@ -419,15 +434,16 @@ function App(difficultLevel) {
     }
   };
 
-  self.getName = function() {
+
+  self.getNameAndWaterAndHits = function(waterC, hitsC) {
     var name = document.getElementById('playerName').value;
     self.player.name = name;
-  };
-
-  self.getWaterAndHits = function(waterC, hitsC) {
     self.player.waterC = waterC;
     self.player.hitsC = hitsC;
+    self.players.push(self.player);
   };
+
+
 }
 
 //Sound Effects
