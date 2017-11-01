@@ -8,7 +8,6 @@ function App(difficultLevel) {
   self.scoreSpace2 = 0; //Hits counter
   self.hitC = 0;
   self.level = [];
-  self.selectedRec = null;
   self.idNumber = null;
 
   //DOM elements
@@ -32,10 +31,17 @@ function App(difficultLevel) {
   //Level variable
   self.levelMode = null;
   self.level = null;
-  self.hitC = null;
-  self.waterC = null;
+
   //Sound
+  self.soundID = "Thunder";
   self.createjs = null;
+  //PLAYER
+  self.players = [];
+  self.player = {
+    name: null,
+    waterC: null,
+    hitC: null
+  };
 
 
   //Initail Welcome
@@ -213,10 +219,12 @@ function App(difficultLevel) {
     nameElementPar.innerText = 'PLAYER NAME:';
     nameElement.appendChild(nameElementPar);
     //Input text
-    var nameElementInput = document.createElement('input');
-    nameElementInput.type = "text";
-    nameElementInput.className = 'nameElementInput';
-    nameElement.appendChild(nameElementInput);
+    self.nameElementInput = document.createElement('input');
+    self.nameElementInput.type = "text";
+    self.nameElementInput.className = 'nameElementInput';
+    self.nameElementInput.id = "playerName";
+    //nameElementInput.addEventListener("keydown", self.getName);
+    nameElement.appendChild(self.nameElementInput);
 
     //Create Radio buttons (Level Selection)
     var radioForm = document.createElement('form');
@@ -256,6 +264,7 @@ function App(difficultLevel) {
     var labelRadioHard = document.createElement('label');
     labelRadioHard.innerHTML = ' ' + 'LEVEL HARD';
     radioForm.appendChild(labelRadioHard);
+    self.nameElementInput.disabled = false;
     //Easy
 
     //Medium
@@ -291,8 +300,8 @@ function App(difficultLevel) {
     self.easyLev.disabled = true;
     self.mediumLev.disabled = true;
     self.hardLev.disabled = true;
-    //Adding the Game Over message at the end of the Game
-    //self.gameOver();
+    self.nameElementInput.disabled = true;
+    self.getName();
   };
 
   //Destroy grid
@@ -305,8 +314,6 @@ function App(difficultLevel) {
     self.mediumLev.disabled = false;
     self.hardLev.disabled = false;
   };
-
-  //Funtion that add the EventListener to divs
 
 
   //Adding submarines to Div
@@ -343,30 +350,35 @@ function App(difficultLevel) {
   //Flip the Card
   self.flipCard = function(event) {
     var target = event.currentTarget;
+    //First 'if' is to prevent the box to be clicked twice and count twice
     if (target.className !== 'iDivClicked') {
       target.classList.remove('iDiv');
       target.classList.add('iDivClicked');
       if (target.firstChild) {
         target.firstChild.style.display = "block";
       }
-      //Add water counter
+      //Add hits counter
       if (target.firstChild) {
         self.hitC = self.hitC + 1;
         self.scoreSpace2.innerHTML = self.hitC;
+        //self.playSound();
       }
-      //Add hit counter
+      //Add water counter
       else {
         self.waterC = self.waterC + 1;
         self.scoreSpace1.innerHTML = self.waterC;
         //self.playSound();
       }
       //Counting to Display the Game Over message at the end
-      if ((self.level / 5) === self.hitC) {
+      if ((self.level) === self.hitC) {
         //Building the Message
         var message = document.createElement('div');
         message.className = 'message';
         message.innerHTML = 'GAME OVER ' + 'you got ' + self.hitC + ' hits ' + 'and ' + self.waterC + ' water attempts';
         self.levelElement.appendChild(message);
+        //Getting waters and hits the object
+        self.getWaterAndHits();
+        self.players.push(self.player);
       }
     }
   };
@@ -384,9 +396,7 @@ function App(difficultLevel) {
     //Build grid and Suffle and add submarines
     self.buildGrid();
     self.addSubmarineToDiv();
-    /*self.easyLev.disabled = false;
-    self.mediumLev.disabled = false;
-    self.hardLev.disabled = false;*/
+    //Getting the Name of the player
   };
 
   //Select level
@@ -409,16 +419,15 @@ function App(difficultLevel) {
     }
   };
 
-  /*self.gameOver = function() {
-    var levelS = self.level / 5;
-    if (levelS === self.hitC) {
-      //Building the Message
-      var message = document.createElement('div');
-      message.className = 'message';
-      message.innerHTML = 'GAME OVER ' + 'you got ' + self.hitC + ' hits ' + 'and ' + self.waterC + 'water attempts';
-      self.levelElement.appendChild(message);
-    }
-  };*/
+  self.getName = function() {
+    var name = document.getElementById('playerName').value;
+    self.player.name = name;
+  };
 
-
+  self.getWaterAndHits = function(waterC, hitsC) {
+    self.player.waterC = waterC;
+    self.player.hitsC = hitsC;
+  };
 }
+
+//Sound Effects
