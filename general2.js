@@ -343,29 +343,31 @@ function App(difficultLevel) {
   //Flip the Card
   self.flipCard = function(event) {
     var target = event.currentTarget;
-    target.classList.remove('iDiv');
-    target.classList.add('iDivClicked');
-    if (target.firstChild) {
-      target.firstChild.style.display = "block";
-    }
-    //Add water counter
-    if (target.firstChild) {
-      self.hitC = self.hitC + 1;
-      self.scoreSpace2.innerHTML = self.hitC;
-    }
-    //Add hit counter
-    else {
-      self.waterC = self.waterC + 1;
-      self.scoreSpace1.innerHTML = self.waterC;
-      //self.playSound();
-    }
-    //Counting to Display the Game Over message at the end
-    if ((self.level / 5) === self.hitC) {
-      //Building the Message
-      var message = document.createElement('div');
-      message.className = 'message';
-      message.innerHTML = 'GAME OVER ' + 'you got ' + self.hitC + ' hits ' + 'and ' + self.waterC + ' water attempts';
-      self.levelElement.appendChild(message);
+    if (target.className !== 'iDivClicked') {
+      target.classList.remove('iDiv');
+      target.classList.add('iDivClicked');
+      if (target.firstChild) {
+        target.firstChild.style.display = "block";
+      }
+      //Add water counter
+      if (target.firstChild) {
+        self.hitC = self.hitC + 1;
+        self.scoreSpace2.innerHTML = self.hitC;
+      }
+      //Add hit counter
+      else {
+        self.waterC = self.waterC + 1;
+        self.scoreSpace1.innerHTML = self.waterC;
+        //self.playSound();
+      }
+      //Counting to Display the Game Over message at the end
+      if ((self.level / 5) === self.hitC) {
+        //Building the Message
+        var message = document.createElement('div');
+        message.className = 'message';
+        message.innerHTML = 'GAME OVER ' + 'you got ' + self.hitC + ' hits ' + 'and ' + self.waterC + ' water attempts';
+        self.levelElement.appendChild(message);
+      }
     }
   };
 
