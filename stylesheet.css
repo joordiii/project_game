@@ -245,6 +245,21 @@ html, body {
   width: 100%;
   height: auto;
   flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.list1 {
+  background-color: rgb(161, 179, 96);
+  width: 100px;
+  height: 100px;
+}
+
+.list2 {
+  background-color: rgb(95, 179, 176);
+  width: 100px;
+  height: 100px;
 }
 
 .
@@ -337,6 +352,11 @@ button:disabled, button[disabled] {
   .bestScorersElement {
     width: auto;
     height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2%;
   }
   .scoreSpace1 {
     font-size: 2em;

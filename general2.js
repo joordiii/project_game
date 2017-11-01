@@ -36,7 +36,7 @@ function App(difficultLevel) {
   self.soundID = "Thunder";
   self.createjs = null;
   //PLAYER
-  self.players = [];
+  self.players = [0];
   self.player = {
     name: null,
     waterC: null,
@@ -281,8 +281,55 @@ function App(difficultLevel) {
     radioForm.appendChild(labelRadioHard);
     self.nameElementInput.disabled = false;
 
+    //Building the list
+    var list1 = document.createElement('ol');
+    list1.className = 'list1';
+    bestScorers1Element.appendChild(list1);
 
+    var li1 = document.createElement('li');
+    li1.id = 'li1';
+    list1.appendChild(li1);
 
+    var li2 = document.createElement('li');
+    li2.id = 'li2';
+    list1.appendChild(li2);
+
+    var li3 = document.createElement('li');
+    li3.id = 'li3';
+    list1.appendChild(li3);
+
+    var li4 = document.createElement('li');
+    li4.id = 'li4';
+    list1.appendChild(li4);
+
+    var li5 = document.createElement('li');
+    li5.id = 'li5';
+    list1.appendChild(li5);
+
+    var list2 = document.createElement('ol');
+    list2.className = 'list2';
+    list2.setAttribute('start', 6);
+    bestScorers2Element.appendChild(list2);
+
+    var li6 = document.createElement('li');
+    li6.id = 'li6';
+    list2.appendChild(li6);
+
+    var li7 = document.createElement('li');
+    li7.id = 'li7';
+    list2.appendChild(li7);
+
+    var li8 = document.createElement('li');
+    li8.id = 'li8';
+    list2.appendChild(li8);
+
+    var li9 = document.createElement('li');
+    li9.id = 'li9';
+    list2.appendChild(li9);
+
+    var li10 = document.createElement('li');
+    li10.id = 'li10';
+    list2.appendChild(li10);
 
   };
 
@@ -362,7 +409,7 @@ function App(difficultLevel) {
 
     //First 'if' is to prevent the box to be clicked twice and count twice
 
-    if ((2) === self.player.hitC) {
+    if ((self.level) === self.player.hitC) {
       //Building the Message
       if (self.firstTime) {
         self.firstTime = false;
@@ -370,6 +417,7 @@ function App(difficultLevel) {
         self.buildMessage('GAME OVER ' + 'you got ' + self.player.hitC + ' hits ' + 'in ' + (self.player.hitC + self.player.waterC) + ' attempts');
         //Getting waters and hits the object
         self.getNameAndWaterAndHits(self.player.waterC, self.player.hitC);
+        self.writeNameInList();
       }
     } else {
 
@@ -447,6 +495,14 @@ function App(difficultLevel) {
     self.player.waterC = waterC;
     self.player.hitsC = hitsC;
     self.players.push(self.player);
+    console.log(self.players[0].name);
+  };
+
+  self.writeNameInList = function() {
+    for (var ix = 1; ix < self.players.length; ix++) {
+      var scoreItem = document.getElementById('li' + ix);
+      scoreItem.innerHTML = self.players[ix].name + ' ' + self.player.hitsC + 'H ' + (self.player.hitsC + self.player.waterC) + 'A';
+    }
   };
 
 
