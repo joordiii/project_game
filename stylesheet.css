@@ -77,15 +77,16 @@ html, body {
   justify-content: center;
 }
 
-.timerElement {}
+.goalElement {}
 
-.timerSpace {
+.goalSpace {
   width: 70%;
-  height: 50%;
+  height: 30%;
   background-color: white;
+  text-align: center;
 }
 
-.timerSpacePar {
+.goalSpacePar {
   margin-bottom: 4%;
   font-size: 0.75em;
 }

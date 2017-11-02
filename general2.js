@@ -8,6 +8,8 @@ function App(difficultLevel) {
   self.level = [];
   self.idNumber = null;
   self.firstTime = true;
+  self.countGames = -1;
+  self.boxCountDown = null;
 
   //DOM elements
   self.containerElement = document.getElementById('container');
@@ -74,6 +76,7 @@ function App(difficultLevel) {
   self.reset = function() {
     self.destroyMain();
     self.buildMainScreen();
+    self.writeNameInList();
     self.firstTime = true;
   };
 
@@ -116,10 +119,10 @@ function App(difficultLevel) {
     header3.className = 'innerHeader';
     mainHeader.appendChild(header3);
     //Building subsections into the header
-    var timerElement = document.createElement('div');
-    timerElement.className = 'timerElement';
-    timerElement.className = 'size';
-    header1.appendChild(timerElement);
+    var goalElement = document.createElement('div');
+    goalElement.className = 'goalElement';
+    goalElement.className = 'size';
+    header1.appendChild(goalElement);
     //
     var scoreElementOuter = document.createElement('div');
     scoreElementOuter.className = 'scoreElementOuter';
@@ -149,7 +152,6 @@ function App(difficultLevel) {
     var restartButtonElement = document.createElement('div');
     restartButtonElement.className = 'restartButtonElement';
     restartButtonElement.className = 'size';
-    //restartButtonElement.addEventListener('click', self.resetGame);
     restartButtonElement.addEventListener('click', self.resetGame);
     header3.appendChild(restartButtonElement);
     //
@@ -178,15 +180,15 @@ function App(difficultLevel) {
     bestScorers2Element.className = 'bestScorersElement';
     mainFooter.appendChild(bestScorers2Element);
     // Timer space lavel
-    var timerSpacePar = document.createElement('p');
-    timerSpacePar.className = 'timerSpacePar';
-    timerSpacePar.id = 'timer';
-    timerSpacePar.innerText = 'TIME:';
-    timerElement.appendChild(timerSpacePar);
+    var goalSpacePar = document.createElement('p');
+    goalSpacePar.className = 'goalSpacePar';
+    goalSpacePar.id = 'timer';
+    goalSpacePar.innerText = 'GOAL:';
+    goalElement.appendChild(goalSpacePar);
     //Building the timer space
-    var timerSpace = document.createElement('div');
-    timerSpace.className = 'timerSpace';
-    timerElement.appendChild(timerSpace);
+    self.goalSpace = document.createElement('div');
+    self.goalSpace.className = 'goalSpace';
+    goalElement.appendChild(self.goalSpace);
     // Score space lavel1
     var scoreSpacePar1 = document.createElement('p');
     scoreSpacePar1.className = 'scoreSpacePar1';
@@ -217,7 +219,7 @@ function App(difficultLevel) {
     self.restartButton.id = 'playButton';
     self.restartButton.innerHTML = 'PLAY';
     restartButtonElement.appendChild(self.restartButton);
-    self.restartButton.addEventListener('click', self.buildGrid);
+    //self.restartButton.addEventListener('click', self.buildGrid);
     //Reset
     self.resetButton = document.createElement('button');
     self.resetButton.className = 'resetButton';
@@ -226,7 +228,6 @@ function App(difficultLevel) {
     self.resetButton.innerHTML = 'RESET';
     self.resetButton.disabled = true;
     resetElement.appendChild(self.resetButton);
-    //self.resetButton.addEventListener('click', self.destroyGrid);
     self.resetButton.addEventListener('click', self.reset);
     //Building de form
     var nameElementPar = document.createElement('p');
@@ -257,6 +258,8 @@ function App(difficultLevel) {
     var labelRadioEasy = document.createElement('label');
     labelRadioEasy.innerHTML = ' ' + 'LEVEL EASY';
     radioForm.appendChild(labelRadioEasy);
+    //Event Listener to see the goalSpace
+    self.easyLev.addEventListener("click", self.myGoal);
 
     self.mediumLev = document.createElement('input');
     self.mediumLev.className = 'mediumLev';
@@ -268,6 +271,8 @@ function App(difficultLevel) {
     var labelRadioMedium = document.createElement('label');
     labelRadioMedium.innerHTML = ' ' + 'LEVEL MEDIUM';
     radioForm.appendChild(labelRadioMedium);
+    //Event Listener to see the goalSpace
+    self.mediumLev.addEventListener("click", self.myGoal);
 
     self.hardLev = document.createElement('input');
     self.hardLev.className = 'hardLev';
@@ -279,6 +284,9 @@ function App(difficultLevel) {
     var labelRadioHard = document.createElement('label');
     labelRadioHard.innerHTML = ' ' + 'LEVEL HARD';
     radioForm.appendChild(labelRadioHard);
+    //Event Listener to see the goalSpace
+    self.hardLev.addEventListener("click", self.myGoal);
+
     self.nameElementInput.disabled = false;
 
     //Building the list
@@ -358,6 +366,8 @@ function App(difficultLevel) {
     self.mediumLev.disabled = true;
     self.hardLev.disabled = true;
     self.nameElementInput.disabled = true;
+    //counts de number of games
+    self.countGames = self.countGames + 1;
   };
 
   //Destroy grid
@@ -408,13 +418,14 @@ function App(difficultLevel) {
     var target = event.currentTarget;
 
     //First 'if' is to prevent the box to be clicked twice and count twice
-
-    if ((self.level) === self.player.hitC) {
+    //CHANGE 2 by self.level
+    if ((2) === self.player.hitC) {
       //Building the Message
       if (self.firstTime) {
         self.firstTime = false;
 
         self.buildMessage('GAME OVER ' + 'you got ' + self.player.hitC + ' hits ' + 'in ' + (self.player.hitC + self.player.waterC) + ' attempts');
+        //self.buildMessage('GAME OVER ' + 'y');
         //Getting waters and hits the object
         self.getNameAndWaterAndHits(self.player.waterC, self.player.hitC);
         self.writeNameInList();
@@ -426,6 +437,7 @@ function App(difficultLevel) {
         target.classList.add('iDivClicked');
         if (target.firstChild) {
           target.firstChild.style.display = "block";
+          new Audio('sounds/Blast-SoundBible.com-2068539061.mp3').play();
         }
         //Add hits counter
         if (target.firstChild) {
@@ -437,6 +449,7 @@ function App(difficultLevel) {
         else {
           self.player.waterC = self.player.waterC + 1;
           self.scoreSpace1.innerHTML = self.player.waterC;
+          new Audio('sounds/Slime Splash-SoundBible.com-1894179558.mp3').play();
           //self.playSound();
         }
         //Counting to Display the Game Over message at the end
@@ -460,7 +473,7 @@ function App(difficultLevel) {
     self.scoreSpace1.innerHTML = self.player.waterC;
     self.scoreSpace2.innerHTML = self.player.hitC;
     //Destroy grid
-    self.destroyGrid();
+    //self.destroyGrid();
     //Select level, used to buid grid with appropiate number of submarines
     self.selectLevel();
     //Build grid and Suffle and add submarines
@@ -476,12 +489,15 @@ function App(difficultLevel) {
     var l3 = document.getElementById('radio3');
     if (l1.checked) {
       self.level = 60;
+      self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
     }
     if (l2.checked) {
       self.level = 45;
+      self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
     }
     if (l3.checked) {
       self.level = 30;
+      self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
     }
     if (l1.checked === false && l2.checked === false && l3.checked === false) {
       window.alert('You must chose a level');
@@ -489,20 +505,89 @@ function App(difficultLevel) {
   };
 
 
-  self.getNameAndWaterAndHits = function(waterC, hitsC) {
+  self.getNameAndWaterAndHits = function(waterC, hitC) {
     var name = document.getElementById('playerName').value;
     self.player.name = name;
     self.player.waterC = waterC;
-    self.player.hitsC = hitsC;
+    self.player.hitC = hitC;
     self.players.push(self.player);
-    console.log(self.players[0].name);
   };
 
   self.writeNameInList = function() {
     for (var ix = 1; ix < self.players.length; ix++) {
       var scoreItem = document.getElementById('li' + ix);
-      scoreItem.innerHTML = self.players[ix].name + ' ' + self.player.hitsC + 'H ' + (self.player.hitsC + self.player.waterC) + 'A';
+      scoreItem.innerHTML = self.players[ix].name + ' ' + self.player.hitC + 'H ' + (self.player.hitC + self.player.waterC) + 'A';
     }
+  };
+
+
+  /*self.writeNameInList = function() {
+    for (var ix = self.countGames; ix < self.countGames + 1; ix++) {
+      var scoreItem = document.getElementById('li' + (ix + 1));
+      scoreItem.innerHTML = self.players[ix].name + ' ' + self.player.hitC + 'H ' + (self.player.hitC + self.player.waterC) + 'A';
+    }
+  };*/
+
+  self.myGoal = function() {
+    var l1 = document.getElementById('radio1');
+    var l2 = document.getElementById('radio2');
+    var l3 = document.getElementById('radio3');
+    if (l1.checked) {
+      self.level = 60;
+      self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
+    }
+    if (l2.checked) {
+      self.level = 45;
+      self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
+    }
+    if (l3.checked) {
+      self.level = 30;
+      self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
+    }
+
+  };
+
+  self.flipOneSecond = function() {
+    self.boxCountDown = document.createElement('div');
+    self.boxCountDown.className = 'boxCountDown';
+    self.mainMain.appendChild('self.boxCountDown');
+
+    setTimeout(self.threeSeconds, 500);
+    setTimeout(self.threeSecondsDel, 1500);
+    setTimeout(self.twoSeconds, 2000);
+    setTimeout(self.twoSecondsDel, 3000);
+    setTimeout(self.oneSeconds, 3500);
+    setTimeout(self.oneSecondsDel, 4500);
+
+    var iniFlip = document.getElementsByClassName("iDiv");
+
+    iniFlip.classList.remove('iDiv');
+    iniFlip.classList.add('iDivClicked');
+    iniFlip.firstChild.style.display = "block";
+
+
+  };
+
+  self.threeSeconds = function() {
+    self.boxCountDown.className = 'boxCountDown';
+    self.boxCountDown.innerHTML = '3';
+  };
+  self.threeSecondsDel = function() {
+    self.boxCountDown.innerHTML = '';
+  };
+  self.twoSeconds = function() {
+    self.boxCountDown.className = 'boxCountDown';
+    self.boxCountDown.innerHTML = '2';
+  };
+  self.twoSecondsDel = function() {
+    self.boxCountDown.innerHTML = '';
+  };
+  self.oneSeconds = function() {
+    self.boxCountDown.className = 'boxCountDown';
+    self.boxCountDown.innerHTML = '1';
+  };
+  self.oneSecondsDel = function() {
+    self.boxCountDown.innerHTML = '';
   };
 
 
