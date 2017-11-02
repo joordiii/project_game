@@ -65,7 +65,7 @@ function App(difficultLevel) {
     //Afegeixo el eventListener al Botó
     welcomeButton.addEventListener("click", self.buildMainScreen);
     //Building the text PLAY
-    var textPlayButton = document.createTextNode('PLAY');
+    var textPlayButton = document.createTextNode('PLAY>>');
     var paragraphPlayButton = document.createElement('p');
     paragraphPlayButton.className = 'paragraphPlayButton';
     paragraphPlayButton.appendChild(textPlayButton);
@@ -169,9 +169,14 @@ function App(difficultLevel) {
     resetElement.className = 'size';
     header3.appendChild(resetElement);
     //Building the 3 sections into the main
-    var messageElement = document.createElement('div');
-    messageElement.className = 'messageElement';
-    self.mainMain.appendChild(messageElement);
+    self.messageElement = document.createElement('div');
+    self.messageElement.className = 'messageElement';
+    self.mainMain.appendChild(self.messageElement);
+    // Creating paragraph into message
+    self.paragraphMessage = document.createElement('p');
+    self.paragraphMessage.className = 'paragraphMessage';
+    self.paragraphMessage.innerHTML = ('SUBMARINE WARFARE');
+    self.messageElement.appendChild(self.paragraphMessage);
     //
     self.boardElement = document.createElement('div');
     self.boardElement.className = 'boardElement';
@@ -226,7 +231,7 @@ function App(difficultLevel) {
     self.restartButton.className = 'restartButton';
     self.restartButton.className = 'sizeBut';
     self.restartButton.id = 'playButton';
-    self.restartButton.innerHTML = 'PLAY';
+    self.restartButton.innerHTML = 'PLAY>>';
     restartButtonElement.appendChild(self.restartButton);
     //self.restartButton.addEventListener('click', self.buildGrid);
     //Reset
@@ -348,6 +353,13 @@ function App(difficultLevel) {
     li10.id = 'li10';
     list2.appendChild(li10);
 
+    //Building the default goal at building the main page
+    self.goalSpace.innerHTML = "FIND 60 SUB's";
+
+    //Build the footer Message
+    self.buildMessage('>> Insert your Name >> Select Level >> PLAY');
+    self.buildMessage('BEAT THE MACHINE AND HIT MORE SUBMARINES THAN WATER');
+
   };
 
   //Build grid
@@ -377,8 +389,8 @@ function App(difficultLevel) {
     self.nameElementInput.disabled = true;
     //counts de number of games
     self.countGames = self.countGames + 1;
-    //Build the footer Message
-    self.buildMessage('>> Insert your Name' + '<br />' + '>> Select Level' + '<br />' + '>> PLAY');
+
+
   };
 
   //Destroy grid

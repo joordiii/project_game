@@ -1,7 +1,7 @@
 /* Generals*/
 
 * {
-  outline: 1px solid blue;
+  /*outline: 1px solid blue;*/
   margin: 0;
   padding: 0;
   font-family: 'Audiowide', cursive;
@@ -52,7 +52,7 @@ html, body {
 }
 
 #header {
-  background-color: red;
+  background-color: #03c900;
   display: flex;
   align-content: center;
   height: 20%;
@@ -83,12 +83,14 @@ html, body {
   width: 70%;
   height: 30%;
   background-color: white;
-  text-align: center;
+  font-size: 0.55em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .goalSpacePar {
   margin-bottom: 4%;
-  font-size: 0.75em;
 }
 
 .scoreElementOuter {
@@ -185,13 +187,29 @@ html, body {
 .messageElement {
   height: 20%;
   width: 100%;
-  background-color: rgb(135, 164, 193);
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.paragraphMessage {
+  font-size: 1.5em;
+  color: #03c900;
+}
+
+.boxCountDown {
+  color: white;
 }
 
 .boardElement {
   height: 60%;
   width: 100%;
-  background-color: rgb(135, 193, 135);
+  background-image: url('images/radar_background_ok.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -204,17 +222,17 @@ html, body {
 .gridContainer {
   height: 90%;
   width: 60%;
-  background-color: red;
+  background-color: black;
   display: flex;
   flex-wrap: wrap;
-  outline: 1px solid black;
+  outline: 1px solid green;
 }
 
 .iDiv {
   height: 10%;
   width: 10%;
-  background-color: gray;
-  outline: 1px solid black;
+  background-color: black;
+  outline: 1px solid green;
 }
 
 .iDivClicked {
@@ -231,15 +249,20 @@ html, body {
 .levelElement {
   height: 20%;
   width: 100%;
-  background-color: rgb(193, 135, 175);
+  background-color: black;
+  color: #03c900;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   align-content: center;
   justify-content: space-around;
 }
 
 #footer {
+  background-image: url('images/background_right_stripes.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   background-color: green;
   height: 20%;
   width: 100%;
@@ -256,28 +279,53 @@ html, body {
 }
 
 .list1 {
-  background-color: rgb(161, 179, 96);
+  background-color: white;
   width: 70%;
   height: auto;
+  outline: 1px solid black;
 }
 
 .list2 {
-  background-color: rgb(95, 179, 176);
+  background-color: white;
   width: 70%;
   height: auto;
+  outline: 1px solid black;
 }
 
-.
+#li1, #li2, #li3, #li4, #li5, #li6, #li7, #li8, #li9, #li10 {
+  outline: 1px solid black;
+}
+
+ol {
+  margin-left: 0;
+  padding-right: 0;
+  list-style-type: none;
+}
+
+ol li {
+  counter-increment: step-counter;
+}
+
+ol li::before {
+  content: counter(step-counter);
+  margin-right: 5px;
+  font-size: 80%;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 3px;
+  counter-reset: start 9;
+}
+
 /*  Buttons Styles  */
 
 .welcomeButton {
   color: white;
+  font-size: 2.5em;
   border-radius: 4px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.welcomeButton {
-  background: rgb(28, 184, 65);
+  background: black;
   width: 200px;
   height: 80px;
   display: flex;
@@ -289,7 +337,8 @@ html, body {
 .sizeBut {
   border-radius: 4px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-  background: rgb(28, 184, 65);
+  background: black;
+  color: white;
   width: 70%;
   height: 50%;
   display: flex;
@@ -330,7 +379,7 @@ button:disabled, button[disabled] {
     flex-direction: row;
   }
   #header {
-    background-color: red;
+    background-color: #03c900;
     display: flex;
     flex-direction: column;
     align-content: center;
@@ -349,10 +398,31 @@ button:disabled, button[disabled] {
   }
   #footer {
     height: 150px;
+    background-image: url('images/background_right_stripes.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-color: green;
     flex-direction: column;
     height: 100%;
     width: 20%;
+  }
+  .goalSpace {
+    width: 70%;
+    height: 30%;
+    background-color: white;
+    font-size: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .goalSpacePar {
+    margin-bottom: 4%;
+    font-size: 0.75em;
+  }
+  .paragraphMessage {
+    font-size: 3em;
+    color: #03c900;
   }
   .bestScorersElement {
     width: auto;
@@ -374,5 +444,20 @@ button:disabled, button[disabled] {
   }
   .radioForm {
     font-size: 1em;
+  }
+  .list1 {
+    background-color: white;
+    width: 70%;
+    height: auto;
+    outline: 1px solid black;
+  }
+  .list2 {
+    background-color: white;
+    width: 70%;
+    height: auto;
+    outline: 1px solid black;
+  }
+  #li1, #li2, #li3, #li4, #li5, #li6, #li7, #li8, #li9, #li10 {
+    outline: 1px solid black;
   }
 }
