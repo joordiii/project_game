@@ -1,8 +1,8 @@
 "use strict";
+var app = null;
 
 function init() {
-
-  var app = new App();
+  app = new App();
   app.buildWelcome();
   //app.loadSound();
 }

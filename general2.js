@@ -10,11 +10,15 @@ function App(difficultLevel) {
   self.firstTime = true;
   self.countGames = -1;
   self.boxCountDown = null;
+  self.delayStart = null;
+  self.timeShow = null;
+  self.timeOutShow = null;
 
   //DOM elements
   self.containerElement = document.getElementById('container');
   self.welcomePage = null;
   self.appMainPage = null;
+  self.mainMain = null;
   self.boardElement = null;
   self.gridContainer = null;
   self.iDivImg = null;
@@ -22,6 +26,7 @@ function App(difficultLevel) {
   self.resetButton = null;
   self.levelElement = null;
   self.message = null;
+
   //RadioButtons
   self.radios = null;
   self.inputRadioEasy = null;
@@ -38,12 +43,13 @@ function App(difficultLevel) {
   self.soundID = "Thunder";
   self.createjs = null;
   //PLAYER
-  self.players = [0];
+  self.players = [];
   self.player = {
-    name: null,
-    waterC: null,
-    hitC: null
+
   };
+  self.player.name = null;
+  self.player.waterC = null;
+  self.player.hitC = null;
 
 
   //Initail Welcome
@@ -99,9 +105,9 @@ function App(difficultLevel) {
     mainHeader.id = 'header';
     self.appMainPage.appendChild(mainHeader);
     //Building the main central part
-    var mainMain = document.createElement('div');
-    mainMain.id = 'main';
-    self.appMainPage.appendChild(mainMain);
+    self.mainMain = document.createElement('div');
+    self.mainMain.id = 'main';
+    self.appMainPage.appendChild(self.mainMain);
     //Building the footer
     var mainFooter = document.createElement('div');
     mainFooter.id = 'footer';
@@ -152,7 +158,10 @@ function App(difficultLevel) {
     var restartButtonElement = document.createElement('div');
     restartButtonElement.className = 'restartButtonElement';
     restartButtonElement.className = 'size';
-    restartButtonElement.addEventListener('click', self.resetGame);
+    restartButtonElement.addEventListener('click', self.countD);
+    restartButtonElement.addEventListener('click', self.delayStart);
+    restartButtonElement.addEventListener('click', self.functShow);
+    restartButtonElement.addEventListener('click', self.functHide);
     header3.appendChild(restartButtonElement);
     //
     var resetElement = document.createElement('div');
@@ -162,15 +171,15 @@ function App(difficultLevel) {
     //Building the 3 sections into the main
     var messageElement = document.createElement('div');
     messageElement.className = 'messageElement';
-    mainMain.appendChild(messageElement);
+    self.mainMain.appendChild(messageElement);
     //
     self.boardElement = document.createElement('div');
     self.boardElement.className = 'boardElement';
-    mainMain.appendChild(self.boardElement);
+    self.mainMain.appendChild(self.boardElement);
     //
     self.levelElement = document.createElement('div');
     self.levelElement.className = 'levelElement';
-    mainMain.appendChild(self.levelElement);
+    self.mainMain.appendChild(self.levelElement);
     //Building the 2 sections into footer
     var bestScorers1Element = document.createElement('div');
     bestScorers1Element.className = 'bestScorersElement';
@@ -368,6 +377,8 @@ function App(difficultLevel) {
     self.nameElementInput.disabled = true;
     //counts de number of games
     self.countGames = self.countGames + 1;
+    //Build the footer Message
+    self.buildMessage('>> Insert your Name' + '<br />' + '>> Select Level' + '<br />' + '>> PLAY');
   };
 
   //Destroy grid
@@ -419,15 +430,19 @@ function App(difficultLevel) {
 
     //First 'if' is to prevent the box to be clicked twice and count twice
     //CHANGE 2 by self.level
-    if ((2) === self.player.hitC) {
+    if ((self.level) === self.player.hitC) {
       //Building the Message
       if (self.firstTime) {
         self.firstTime = false;
+        if (self.player.hitC > self.player.waterC) {
 
-        self.buildMessage('GAME OVER ' + 'you got ' + self.player.hitC + ' hits ' + 'in ' + (self.player.hitC + self.player.waterC) + ' attempts');
-        //self.buildMessage('GAME OVER ' + 'y');
+          self.buildMessage('YOU WIN!!! ' + 'you got ' + self.player.hitC + ' hits ' + 'in ' + (self.player.hitC + self.player.waterC) + ' attempts');
+        } else {
+          self.buildMessage('YOU LOSE!!! ' + 'you got ' + self.player.hitC + ' hits ' + 'in ' + (self.player.hitC + self.player.waterC) + ' attempts');
+
+        }
         //Getting waters and hits the object
-        self.getNameAndWaterAndHits(self.player.waterC, self.player.hitC);
+        self.getNameAndWaterAndHits();
         self.writeNameInList();
       }
     } else {
@@ -441,7 +456,7 @@ function App(difficultLevel) {
         }
         //Add hits counter
         if (target.firstChild) {
-          self.player.hitC = self.player.hitC + 1;
+          self.player.hitC += 1;
           self.scoreSpace2.innerHTML = self.player.hitC;
           //self.playSound();
         }
@@ -466,16 +481,23 @@ function App(difficultLevel) {
     self.levelElement.appendChild(self.message);
   };
 
+  self.delayStart = function() {
+    var time = setTimeout(self.resetGame, 5000);
+
+  };
+
   self.resetGame = function() {
     //Counters to '0'
     self.player.waterC = 0;
     self.player.hitC = 0;
+    self.player.name = '';
     self.scoreSpace1.innerHTML = self.player.waterC;
     self.scoreSpace2.innerHTML = self.player.hitC;
     //Destroy grid
     //self.destroyGrid();
     //Select level, used to buid grid with appropiate number of submarines
     self.selectLevel();
+
     //Build grid and Suffle and add submarines
     self.buildGrid();
     self.addSubmarineToDiv();
@@ -505,33 +527,25 @@ function App(difficultLevel) {
   };
 
 
-  self.getNameAndWaterAndHits = function(waterC, hitC) {
+  self.getNameAndWaterAndHits = function() {
     var name = document.getElementById('playerName').value;
     self.player.name = name;
-    self.player.waterC = waterC;
-    self.player.hitC = hitC;
-    self.players.push(self.player);
+    var playerPush = Object.assign({}, self.player);
+    self.players.push(playerPush);
   };
 
   self.writeNameInList = function() {
-    for (var ix = 1; ix < self.players.length; ix++) {
-      var scoreItem = document.getElementById('li' + ix);
-      scoreItem.innerHTML = self.players[ix].name + ' ' + self.player.hitC + 'H ' + (self.player.hitC + self.player.waterC) + 'A';
+    for (var ix = 0; ix < self.players.length; ix++) {
+      var scoreItem = document.getElementById('li' + (ix + 1));
+      scoreItem.innerHTML = self.players[ix].name + ' ' + self.players[ix].hitC + 'H ' + (self.players[ix].hitC + self.players[ix].waterC) + 'A';
     }
   };
-
-
-  /*self.writeNameInList = function() {
-    for (var ix = self.countGames; ix < self.countGames + 1; ix++) {
-      var scoreItem = document.getElementById('li' + (ix + 1));
-      scoreItem.innerHTML = self.players[ix].name + ' ' + self.player.hitC + 'H ' + (self.player.hitC + self.player.waterC) + 'A';
-    }
-  };*/
 
   self.myGoal = function() {
     var l1 = document.getElementById('radio1');
     var l2 = document.getElementById('radio2');
     var l3 = document.getElementById('radio3');
+
     if (l1.checked) {
       self.level = 60;
       self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
@@ -547,10 +561,10 @@ function App(difficultLevel) {
 
   };
 
-  self.flipOneSecond = function() {
+  self.countD = function() {
     self.boxCountDown = document.createElement('div');
     self.boxCountDown.className = 'boxCountDown';
-    self.mainMain.appendChild('self.boxCountDown');
+    self.boardElement.appendChild(self.boxCountDown);
 
     setTimeout(self.threeSeconds, 500);
     setTimeout(self.threeSecondsDel, 1500);
@@ -558,13 +572,6 @@ function App(difficultLevel) {
     setTimeout(self.twoSecondsDel, 3000);
     setTimeout(self.oneSeconds, 3500);
     setTimeout(self.oneSecondsDel, 4500);
-
-    var iniFlip = document.getElementsByClassName("iDiv");
-
-    iniFlip.classList.remove('iDiv');
-    iniFlip.classList.add('iDivClicked');
-    iniFlip.firstChild.style.display = "block";
-
 
   };
 
@@ -590,7 +597,46 @@ function App(difficultLevel) {
     self.boxCountDown.innerHTML = '';
   };
 
+  //Show submarines 1 second
+  self.functShow = function() {
+    self.timeShow = setTimeout(self.showSub, 5000);
+  };
+  //Stop showing
+  self.functHide = function() {
+    self.timeOutShow = setTimeout(self.hideSub, 6000);
+  };
+
+
+
+  self.showSub = function() {
+    var elems = document.querySelectorAll(".iDiv");
+    [].forEach.call(elems, function(el) {
+      el.classList.remove("iDiv");
+    });
+    [].forEach.call(elems, function(el) {
+      el.classList.add("iDivClicked");
+    });
+    for (var b = 0; b < 100; b++) {
+      if (elems[b].firstChild) {
+        elems[b].firstChild.style.display = "block";
+      }
+    }
+  };
+
+
+  self.hideSub = function() {
+    var elems2 = document.querySelectorAll(".iDivClicked");
+    [].forEach.call(elems2, function(el) {
+      el.classList.remove("iDivClicked");
+    });
+    [].forEach.call(elems2, function(el) {
+      el.classList.add("iDiv");
+    });
+    for (var b = 0; b < 100; b++) {
+      if (elems2[b].firstChild) {
+        elems2[b].firstChild.style.display = "none";
+      }
+    }
+  };
 
 }
-
-//Sound Effects

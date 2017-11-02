@@ -197,6 +197,10 @@ html, body {
   align-items: center;
 }
 
+.boxCountDown {
+  font-size: 1000%;
+}
+
 .gridContainer {
   height: 90%;
   width: 60%;
@@ -253,14 +257,14 @@ html, body {
 
 .list1 {
   background-color: rgb(161, 179, 96);
-  width: 100px;
-  height: 100px;
+  width: 70%;
+  height: auto;
 }
 
 .list2 {
   background-color: rgb(95, 179, 176);
-  width: 100px;
-  height: 100px;
+  width: 70%;
+  height: auto;
 }
 
 .
