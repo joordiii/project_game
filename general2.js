@@ -44,6 +44,13 @@ function App(difficultLevel) {
   self.player.hitC = null;
   //Sounds
   self.audioState = null;
+  self.audioHit = null;
+  self.audioWater = null;
+  self.soundYes = null;
+  self.soundNo = null;
+  self.bestScorers2Element = null;
+  self.audioHit = new Audio('sounds/Blast-SoundBible.com-2068539061.mp3');
+  self.audioWater = new Audio('sounds/Slime Splash-SoundBible.com-1894179558.mp3');
 
   //Initail Welcome
   self.buildWelcome = function() {
@@ -180,9 +187,10 @@ function App(difficultLevel) {
     bestScorers1Element.className = 'bestScorersElement';
     mainFooter.appendChild(bestScorers1Element);
     //
-    var bestScorers2Element = document.createElement('div');
-    bestScorers2Element.className = 'bestScorersElement';
-    mainFooter.appendChild(bestScorers2Element);
+    self.bestScorers2Element = document.createElement('div');
+    self.bestScorers2Element.className = 'bestScorersElement';
+    self.bestScorers2Element.id = 'bestScorersElementId';
+    mainFooter.appendChild(self.bestScorers2Element);
     // Timer space lavel
     var goalSpacePar = document.createElement('p');
     goalSpacePar.className = 'goalSpacePar';
@@ -321,38 +329,15 @@ function App(difficultLevel) {
     list1.appendChild(li5);
     //Second Half (5 items)
 
-    var soundYes = document.createElement('div');
-    soundYes.className = 'soundYes';
-    bestScorers2Element.appendChild(soundYes);
+    self.soundYes = document.createElement('div');
+    self.soundYes.className = 'soundYes';
+    self.bestScorers2Element.appendChild(self.soundYes);
+    self.soundYes.addEventListener("click", self.soundPage);
 
-    var soundNo = document.createElement('div');
-    soundNo.className = 'soundNo';
-    bestScorers2Element.appendChild(soundNo);
-
-    /*var list2 = document.createElement('ol');
-    list2.className = 'list2';
-    list2.setAttribute('start', 6);
-    bestScorers2Element.appendChild(list2);
-
-    var li6 = document.createElement('li');
-    li6.id = 'li6';
-    list2.appendChild(li6);
-
-    var li7 = document.createElement('li');
-    li7.id = 'li7';
-    list2.appendChild(li7);
-
-    var li8 = document.createElement('li');
-    li8.id = 'li8';
-    list2.appendChild(li8);
-
-    var li9 = document.createElement('li');
-    li9.id = 'li9';
-    list2.appendChild(li9);
-
-    var li10 = document.createElement('li');
-    li10.id = 'li10';
-    list2.appendChild(li10);*/
+    self.soundNo = document.createElement('div');
+    self.soundNo.className = 'soundNo';
+    self.bestScorers2Element.appendChild(self.soundNo);
+    self.soundNo.addEventListener("click", self.mutePage);
 
     //Building the default goal at building the main page
     self.goalSpace.innerHTML = "FIND 49 SUB's";
@@ -391,6 +376,9 @@ function App(difficultLevel) {
     //Destroy message of the bottom to clean the screen and
     //leave space to the Game Over message
     self.emptyNode(self.levelElement);
+    //Adding the music to the DOM
+    self.mainMain.appendChild(self.audioHit);
+    self.mainMain.appendChild(self.audioWater);
   };
 
   //Destroy grid
@@ -437,7 +425,7 @@ function App(difficultLevel) {
     var target = event.currentTarget;
     //First 'if' is to prevent the box to be clicked twice and count twice
     //CHANGE 2 by self.level
-    if ((2) === self.player.hitC) {
+    if ((5) === self.player.hitC) {
       //Building the Message
       if (self.firstTime) {
         self.firstTime = false;
@@ -459,7 +447,8 @@ function App(difficultLevel) {
         //If it has a Child (image) the display the content and play the Audio
         if (target.firstChild) {
           target.firstChild.style.display = "block";
-          new Audio('sounds/Blast-SoundBible.com-2068539061.mp3').play();
+          self.audioHit.play();
+          self.audioHit.className = "audio";
         }
         //Add hits counter
         if (target.firstChild) {
@@ -470,7 +459,8 @@ function App(difficultLevel) {
         else {
           self.player.waterC = self.player.waterC + 1;
           self.scoreSpace1.innerHTML = self.player.waterC;
-          new Audio('sounds/Slime Splash-SoundBible.com-1894179558.mp3').play();
+          self.audioWater.play();
+          self.audioWater.className = 'audio';
         }
       }
     }
@@ -649,14 +639,55 @@ function App(difficultLevel) {
   };
 
   //Enabling and disabling Audio
-  self.audioState = document.getElementsByTagName("body");
+  /*self.audioState = document.getElementById("body");
 
   self.enableMute = function() {
-    self.audioState.getElementsByTagName("body")[0].muted = true;
+    self.audioState.muted = true;
   };
 
   self.disableMute = function() {
-    self.audioState.getElementsByTagName("body")[0].muted = false;
+    self.audioState.muted = false;
+  };*/
+
+
+
+
+
+  /*self.mutePage = function() {
+    var audios = document.getElementsByClassName('audio');
+    [].forEach.call(audios, function(audio) {
+      self.muteMe(audio);
+    });
   };
+
+  self.muteMe = function(elem) {
+    elem.muted = true;
+    elem.pause();
+  };*/
+
+
+
+  self.mutePage = function() {
+    self.muteMe(self.audioHit);
+    self.muteMe(self.audioWater);
+
+  };
+
+  self.muteMe = function(elem) {
+    elem.muted = true;
+    //elem.pause();
+  };
+
+
+  self.soundPage = function() {
+    self.soundMe(self.audioHit);
+    self.soundMe(self.audioWater);
+  };
+
+  self.soundMe = function(elem) {
+    elem.muted = false;
+    //elem.play();
+  };
+
 
 }

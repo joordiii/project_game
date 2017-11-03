@@ -226,6 +226,7 @@ html, body {
   display: flex;
   flex-wrap: wrap;
   outline: 1px solid green;
+  cursor: crosshair;
 }
 
 .iDiv {
@@ -276,6 +277,13 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#bestScorersElementId {
+  display: flex;
+  display: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .list1 {
@@ -361,6 +369,24 @@ button:disabled, button[disabled] {
 
 .gridContainer {}
 
+.soundYes {
+  width: 30%;
+  height: 50%;
+  background-image: url('images/sound_enabled.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.soundNo {
+  width: 30%;
+  height: 50%;
+  background-image: url('images/sound_disabled.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+}
+
 @media (min-width: 750px) {
   #container {
     flex-direction: row;
@@ -435,6 +461,9 @@ button:disabled, button[disabled] {
   .radioForm {
     font-size: 1em;
   }
+  .gridContainer {
+    cursor: crosshair;
+  }
   .list1 {
     background-color: white;
     width: 70%;
@@ -449,5 +478,27 @@ button:disabled, button[disabled] {
   }
   #li1, #li2, #li3, #li4, #li5, #li6, #li7, #li8, #li9, #li10 {
     outline: 1px solid black;
+  }
+  #bestScorersElementId {
+    display: flex;
+    display: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .soundYes {
+    width: 30%;
+    height: 30%;
+    background-image: url('images/sound_enabled.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+  }
+  .soundNo {
+    width: 30%;
+    height: 30%;
+    background-image: url('images/sound_disabled.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
   }
 }
