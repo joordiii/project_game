@@ -158,7 +158,6 @@ function App(difficultLevel) {
     var restartButtonElement = document.createElement('div');
     restartButtonElement.className = 'restartButtonElement';
     restartButtonElement.className = 'size';
-
     header3.appendChild(restartButtonElement);
     //
     var resetElement = document.createElement('div');
@@ -327,7 +326,7 @@ function App(difficultLevel) {
     var li5 = document.createElement('li');
     li5.id = 'li5';
     list1.appendChild(li5);
-    //Second Half (5 items)
+    //Sound Icons
 
     self.soundYes = document.createElement('div');
     self.soundYes.className = 'soundYes';
@@ -465,6 +464,7 @@ function App(difficultLevel) {
       }
     }
   };
+
   //Function to create the messages at the bottom
   self.buildMessage = function(textDisplay) {
     self.message = document.createElement('div');
@@ -473,16 +473,19 @@ function App(difficultLevel) {
     self.message.innerHTML = textDisplay;
     self.levelElement.appendChild(self.message);
   };
+
   //Destroys the message of the bottom to leave space for next messages
   self.emptyNode = function(node) {
     while (node.firstChild) {
       node.removeChild(node.firstChild);
     }
   };
+
   //Delays the start to be able to see the Count Down
   self.delayStart = function() {
     var time = setTimeout(self.resetGame, 5000);
   };
+
   //Actions to perform whenn clicking Reset
   self.resetGame = function() {
     //Counters to '0'
@@ -638,35 +641,7 @@ function App(difficultLevel) {
     }
   };
 
-  //Enabling and disabling Audio
-  /*self.audioState = document.getElementById("body");
-
-  self.enableMute = function() {
-    self.audioState.muted = true;
-  };
-
-  self.disableMute = function() {
-    self.audioState.muted = false;
-  };*/
-
-
-
-
-
-  /*self.mutePage = function() {
-    var audios = document.getElementsByClassName('audio');
-    [].forEach.call(audios, function(audio) {
-      self.muteMe(audio);
-    });
-  };
-
-  self.muteMe = function(elem) {
-    elem.muted = true;
-    elem.pause();
-  };*/
-
-
-
+  //Functions to enable and disable the sound
   self.mutePage = function() {
     self.muteMe(self.audioHit);
     self.muteMe(self.audioWater);
@@ -688,6 +663,4 @@ function App(difficultLevel) {
     elem.muted = false;
     //elem.play();
   };
-
-
 }
