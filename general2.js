@@ -8,7 +8,6 @@ function App(difficultLevel) {
   self.level = [];
   self.idNumber = null;
   self.firstTime = true;
-  self.countGames = -1;
   self.boxCountDown = null;
   self.delayStart = null;
   self.timeShow = null;
@@ -22,11 +21,10 @@ function App(difficultLevel) {
   self.boardElement = null;
   self.gridContainer = null;
   self.iDivImg = null;
-  self.restartButton = null;
+  self.startButton = null;
   self.resetButton = null;
   self.levelElement = null;
   self.message = null;
-
   //RadioButtons
   self.radios = null;
   self.inputRadioEasy = null;
@@ -38,19 +36,12 @@ function App(difficultLevel) {
   //Level variable
   self.levelMode = null;
   self.level = null;
-
-  //Sound
-  self.soundID = "Thunder";
-  self.createjs = null;
   //PLAYER
   self.players = [];
-  self.player = {
-
-  };
+  self.player = {};
   self.player.name = null;
   self.player.waterC = null;
   self.player.hitC = null;
-
 
   //Initail Welcome
   self.buildWelcome = function() {
@@ -83,9 +74,9 @@ function App(difficultLevel) {
     self.destroyMain();
     self.buildMainScreen();
     self.writeNameInList();
+    //Variable used to enable writing the message at the bottom at the end of the game
     self.firstTime = true;
   };
-
 
   //Destroy main page
   self.destroyMain = function() {
@@ -158,10 +149,7 @@ function App(difficultLevel) {
     var restartButtonElement = document.createElement('div');
     restartButtonElement.className = 'restartButtonElement';
     restartButtonElement.className = 'size';
-    restartButtonElement.addEventListener('click', self.countD);
-    restartButtonElement.addEventListener('click', self.delayStart);
-    restartButtonElement.addEventListener('click', self.functShow);
-    restartButtonElement.addEventListener('click', self.functHide);
+
     header3.appendChild(restartButtonElement);
     //
     var resetElement = document.createElement('div');
@@ -224,16 +212,20 @@ function App(difficultLevel) {
     self.scoreSpace2.innerHTML = '0';
     scoreElement2.appendChild(self.scoreSpace2);
     //Building the buttons
-    //Start
+    //Start<------- This button was suppress
 
     //Restart ---->>> Now it's Play Button
-    self.restartButton = document.createElement('button');
-    self.restartButton.className = 'restartButton';
-    self.restartButton.className = 'sizeBut';
-    self.restartButton.id = 'playButton';
-    self.restartButton.innerHTML = 'PLAY>>';
-    restartButtonElement.appendChild(self.restartButton);
-    //self.restartButton.addEventListener('click', self.buildGrid);
+    self.startButton = document.createElement('button');
+    self.startButton.className = 'restartButton';
+    self.startButton.className = 'sizeBut';
+    self.startButton.id = 'playButton';
+    self.startButton.innerHTML = 'PLAY>>';
+    restartButtonElement.appendChild(self.startButton);
+    //---Events launched pressing PLAY
+    self.startButton.addEventListener('click', self.countD);
+    self.startButton.addEventListener('click', self.delayStart);
+    self.startButton.addEventListener('click', self.functShow);
+    self.startButton.addEventListener('click', self.functHide);
     //Reset
     self.resetButton = document.createElement('button');
     self.resetButton.className = 'resetButton';
@@ -253,14 +245,12 @@ function App(difficultLevel) {
     self.nameElementInput.type = "text";
     self.nameElementInput.className = 'nameElementInput';
     self.nameElementInput.id = "playerName";
-    //nameElementInput.addEventListener("keydown", self.getName);
     nameElement.appendChild(self.nameElementInput);
-
     //Create Radio buttons (Level Selection)
     var radioForm = document.createElement('form');
     radioForm.className = 'radioForm';
     startButtonElement.appendChild(radioForm);
-
+    //---Easy---
     self.easyLev = document.createElement('input');
     self.easyLev.className = 'easyLev';
     self.easyLev.id = 'radio1';
@@ -272,9 +262,9 @@ function App(difficultLevel) {
     var labelRadioEasy = document.createElement('label');
     labelRadioEasy.innerHTML = ' ' + 'LEVEL EASY';
     radioForm.appendChild(labelRadioEasy);
-    //Event Listener to see the goalSpace
+    //Event Listener to see the message at goalSpace
     self.easyLev.addEventListener("click", self.myGoal);
-
+    //---Medium---
     self.mediumLev = document.createElement('input');
     self.mediumLev.className = 'mediumLev';
     self.mediumLev.id = 'radio2';
@@ -285,9 +275,9 @@ function App(difficultLevel) {
     var labelRadioMedium = document.createElement('label');
     labelRadioMedium.innerHTML = ' ' + 'LEVEL MEDIUM';
     radioForm.appendChild(labelRadioMedium);
-    //Event Listener to see the goalSpace
+    //Event Listener to see the message at goalSpace
     self.mediumLev.addEventListener("click", self.myGoal);
-
+    //---Hard---
     self.hardLev = document.createElement('input');
     self.hardLev.className = 'hardLev';
     self.hardLev.id = 'radio3';
@@ -298,12 +288,12 @@ function App(difficultLevel) {
     var labelRadioHard = document.createElement('label');
     labelRadioHard.innerHTML = ' ' + 'LEVEL HARD';
     radioForm.appendChild(labelRadioHard);
-    //Event Listener to see the goalSpace
+    //Event Listener to see the message at goalSpace
     self.hardLev.addEventListener("click", self.myGoal);
-
+    //Input Text Enabled
     self.nameElementInput.disabled = false;
-
-    //Building the list
+    //Building the list of the scorers (right side)
+    //First Half (5 items)
     var list1 = document.createElement('ol');
     list1.className = 'list1';
     bestScorers1Element.appendChild(list1);
@@ -327,7 +317,7 @@ function App(difficultLevel) {
     var li5 = document.createElement('li');
     li5.id = 'li5';
     list1.appendChild(li5);
-
+    //Second Half (5 items)
     var list2 = document.createElement('ol');
     list2.className = 'list2';
     list2.setAttribute('start', 6);
@@ -354,7 +344,7 @@ function App(difficultLevel) {
     list2.appendChild(li10);
 
     //Building the default goal at building the main page
-    self.goalSpace.innerHTML = "FIND 60 SUB's";
+    self.goalSpace.innerHTML = "FIND 49 SUB's";
 
     //Build the footer Message
     self.buildMessage('>> Insert your Name >> Select Level >> PLAY');
@@ -382,32 +372,29 @@ function App(difficultLevel) {
     self.boardElement.appendChild(self.gridContainer);
     //When the Game Starts --> Enabling RESET button -- Disabling Play button
     self.resetButton.disabled = false;
-    self.restartButton.disabled = true;
+    self.startButton.disabled = true;
     self.easyLev.disabled = true;
     self.mediumLev.disabled = true;
     self.hardLev.disabled = true;
     self.nameElementInput.disabled = true;
-    //counts de number of games
-    self.countGames = self.countGames + 1;
-
-
+    //Destroy message of the bottom to clean the screen and
+    //leave space to the Game Over message
+    self.emptyNode(self.levelElement);
   };
 
   //Destroy grid
   self.destroyGrid = function() {
     self.gridContainer.remove();
     self.resetButton.disabled = true;
-    self.restartButton.disabled = false;
+    self.startButton.disabled = false;
     self.easyLev.disabled = false;
     self.mediumLev.disabled = false;
     self.hardLev.disabled = false;
 
   };
 
-
   //Adding submarines to Div
   self.addSubmarineToDiv = function() {
-
     //Random array of 100 numbers
     var grid = [];
     while (grid.length < 100) {
@@ -415,9 +402,7 @@ function App(difficultLevel) {
       if (grid.indexOf(randomnumber) > -1) continue;
       grid[grid.length] = randomnumber;
     }
-
     //Extracting 60 numbers from random array and giving them and image (submarine)
-
     for (var i = 0; i < self.level; i++) {
       self.idNumber = grid[i];
       if (self.idNumber < 10) {
@@ -439,10 +424,9 @@ function App(difficultLevel) {
   //Flip the Card
   self.flipCard = function(event) {
     var target = event.currentTarget;
-
     //First 'if' is to prevent the box to be clicked twice and count twice
     //CHANGE 2 by self.level
-    if ((self.level) === self.player.hitC) {
+    if ((2) === self.player.hitC) {
       //Building the Message
       if (self.firstTime) {
         self.firstTime = false;
@@ -451,17 +435,17 @@ function App(difficultLevel) {
           self.buildMessage('YOU WIN!!! ' + 'you got ' + self.player.hitC + ' hits ' + 'in ' + (self.player.hitC + self.player.waterC) + ' attempts');
         } else {
           self.buildMessage('YOU LOSE!!! ' + 'you got ' + self.player.hitC + ' hits ' + 'in ' + (self.player.hitC + self.player.waterC) + ' attempts');
-
         }
-        //Getting waters and hits the object
+        //Getting waters and hits and write the name in the scorers list
         self.getNameAndWaterAndHits();
         self.writeNameInList();
       }
     } else {
-
+      //If it hasn't been clicked yet, change class iDiv by iDivClicked
       if (target.className !== 'iDivClicked') {
         target.classList.remove('iDiv');
         target.classList.add('iDivClicked');
+        //If it has a Child (image) the display the content and play the Audio
         if (target.firstChild) {
           target.firstChild.style.display = "block";
           new Audio('sounds/Blast-SoundBible.com-2068539061.mp3').play();
@@ -470,21 +454,17 @@ function App(difficultLevel) {
         if (target.firstChild) {
           self.player.hitC += 1;
           self.scoreSpace2.innerHTML = self.player.hitC;
-          //self.playSound();
         }
         //Add water counter
         else {
           self.player.waterC = self.player.waterC + 1;
           self.scoreSpace1.innerHTML = self.player.waterC;
           new Audio('sounds/Slime Splash-SoundBible.com-1894179558.mp3').play();
-          //self.playSound();
         }
-        //Counting to Display the Game Over message at the end
       }
-
     }
   };
-
+  //Function to create the messages at the bottom
   self.buildMessage = function(textDisplay) {
     self.message = document.createElement('div');
     self.message.className = 'message';
@@ -492,12 +472,17 @@ function App(difficultLevel) {
     self.message.innerHTML = textDisplay;
     self.levelElement.appendChild(self.message);
   };
-
+  //Destroys the message of the bottom to leave space for next messages
+  self.emptyNode = function(node) {
+    while (node.firstChild) {
+      node.removeChild(node.firstChild);
+    }
+  };
+  //Delays the start to be able to see the Count Down
   self.delayStart = function() {
     var time = setTimeout(self.resetGame, 5000);
-
   };
-
+  //Actions to perform whenn clicking Reset
   self.resetGame = function() {
     //Counters to '0'
     self.player.waterC = 0;
@@ -505,32 +490,28 @@ function App(difficultLevel) {
     self.player.name = '';
     self.scoreSpace1.innerHTML = self.player.waterC;
     self.scoreSpace2.innerHTML = self.player.hitC;
-    //Destroy grid
-    //self.destroyGrid();
-    //Select level, used to buid grid with appropiate number of submarines
+    //Select level, used to build grid with appropiate number of submarines
     self.selectLevel();
-
     //Build grid and Suffle and add submarines
     self.buildGrid();
     self.addSubmarineToDiv();
   };
 
   //Select level
-
   self.selectLevel = function() {
     var l1 = document.getElementById('radio1');
     var l2 = document.getElementById('radio2');
     var l3 = document.getElementById('radio3');
     if (l1.checked) {
-      self.level = 60;
+      self.level = 49;
       self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
     }
     if (l2.checked) {
-      self.level = 45;
+      self.level = 39;
       self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
     }
     if (l3.checked) {
-      self.level = 30;
+      self.level = 29;
       self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
     }
     if (l1.checked === false && l2.checked === false && l3.checked === false) {
@@ -538,7 +519,7 @@ function App(difficultLevel) {
     }
   };
 
-
+  //Getting name, hits and water to write in the scorers list
   self.getNameAndWaterAndHits = function() {
     var name = document.getElementById('playerName').value;
     self.player.name = name;
@@ -546,6 +527,7 @@ function App(difficultLevel) {
     self.players.push(playerPush);
   };
 
+  //Writing the values in list scorers
   self.writeNameInList = function() {
     for (var ix = 0; ix < self.players.length; ix++) {
       var scoreItem = document.getElementById('li' + (ix + 1));
@@ -559,20 +541,25 @@ function App(difficultLevel) {
     var l3 = document.getElementById('radio3');
 
     if (l1.checked) {
-      self.level = 60;
+      self.level = 49;
       self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
     }
     if (l2.checked) {
-      self.level = 45;
+      self.level = 39;
       self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
     }
     if (l3.checked) {
-      self.level = 30;
+      self.level = 29;
       self.goalSpace.innerHTML = "FIND " + self.level + " SUB's";
     }
-
   };
 
+  //Disable start button at Count Down
+  self.disableStarButtonDuringCountDown = function() {
+    self.startButton.disabled = true;
+  };
+
+  //Initial CountDown function
   self.countD = function() {
     self.boxCountDown = document.createElement('div');
     self.boxCountDown.className = 'boxCountDown';
@@ -584,7 +571,8 @@ function App(difficultLevel) {
     setTimeout(self.twoSecondsDel, 3000);
     setTimeout(self.oneSeconds, 3500);
     setTimeout(self.oneSecondsDel, 4500);
-
+    //Disable Play Button during CountDown
+    self.disableStarButtonDuringCountDown();
   };
 
   self.threeSeconds = function() {
@@ -613,12 +601,11 @@ function App(difficultLevel) {
   self.functShow = function() {
     self.timeShow = setTimeout(self.showSub, 5000);
   };
+
   //Stop showing
   self.functHide = function() {
     self.timeOutShow = setTimeout(self.hideSub, 6000);
   };
-
-
 
   self.showSub = function() {
     var elems = document.querySelectorAll(".iDiv");
@@ -634,7 +621,6 @@ function App(difficultLevel) {
       }
     }
   };
-
 
   self.hideSub = function() {
     var elems2 = document.querySelectorAll(".iDivClicked");
