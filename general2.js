@@ -42,6 +42,8 @@ function App(difficultLevel) {
   self.player.name = null;
   self.player.waterC = null;
   self.player.hitC = null;
+  //Sounds
+  self.audioState = null;
 
   //Initail Welcome
   self.buildWelcome = function() {
@@ -318,7 +320,16 @@ function App(difficultLevel) {
     li5.id = 'li5';
     list1.appendChild(li5);
     //Second Half (5 items)
-    var list2 = document.createElement('ol');
+
+    var soundYes = document.createElement('div');
+    soundYes.className = 'soundYes';
+    bestScorers2Element.appendChild(soundYes);
+
+    var soundNo = document.createElement('div');
+    soundNo.className = 'soundNo';
+    bestScorers2Element.appendChild(soundNo);
+
+    /*var list2 = document.createElement('ol');
     list2.className = 'list2';
     list2.setAttribute('start', 6);
     bestScorers2Element.appendChild(list2);
@@ -341,7 +352,7 @@ function App(difficultLevel) {
 
     var li10 = document.createElement('li');
     li10.id = 'li10';
-    list2.appendChild(li10);
+    list2.appendChild(li10);*/
 
     //Building the default goal at building the main page
     self.goalSpace.innerHTML = "FIND 49 SUB's";
@@ -635,6 +646,17 @@ function App(difficultLevel) {
         elems2[b].firstChild.style.display = "none";
       }
     }
+  };
+
+  //Enabling and disabling Audio
+  self.audioState = document.getElementsByTagName("body");
+
+  self.enableMute = function() {
+    self.audioState.getElementsByTagName("body")[0].muted = true;
+  };
+
+  self.disableMute = function() {
+    self.audioState.getElementsByTagName("body")[0].muted = false;
   };
 
 }
