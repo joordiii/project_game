@@ -326,8 +326,8 @@ function App(difficultLevel) {
     var li5 = document.createElement('li');
     li5.id = 'li5';
     list1.appendChild(li5);
-    //Sound Icons
 
+    //Sound Icons
     self.soundYes = document.createElement('div');
     self.soundYes.className = 'soundYes';
     self.bestScorers2Element.appendChild(self.soundYes);
@@ -424,7 +424,7 @@ function App(difficultLevel) {
     var target = event.currentTarget;
     //First 'if' is to prevent the box to be clicked twice and count twice
     //CHANGE 2 by self.level
-    if ((5) === self.player.hitC) {
+    if ((self.level) === self.player.hitC) {
       //Building the Message
       if (self.firstTime) {
         self.firstTime = false;
@@ -652,7 +652,6 @@ function App(difficultLevel) {
     elem.muted = true;
     //elem.pause();
   };
-
 
   self.soundPage = function() {
     self.soundMe(self.audioHit);

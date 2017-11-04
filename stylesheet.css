@@ -77,8 +77,6 @@ html, body {
   justify-content: center;
 }
 
-.goalElement {}
-
 .goalSpace {
   width: 70%;
   height: 30%;
@@ -151,8 +149,6 @@ html, body {
   font-size: 2em;
 }
 
-.nameElement {}
-
 .nameElementPar {
   margin-bottom: 7%;
   font-size: 0.75em;
@@ -173,10 +169,6 @@ html, body {
 .radioForm {
   font-size: 0.5em;
 }
-
-.restartButtonElement {}
-
-.resetElement {}
 
 #main {
   background-color: blue;
@@ -361,16 +353,8 @@ button:disabled, button[disabled] {
   color: #666666;
 }
 
-.easyBox {}
-
-.mediumBox {}
-
-.hardBox {}
-
-.gridContainer {}
-
 .soundYes {
-  width: 30%;
+  width: 35%;
   height: 50%;
   background-image: url('images/sound_enabled.png');
   background-repeat: no-repeat;
@@ -379,7 +363,7 @@ button:disabled, button[disabled] {
 }
 
 .soundNo {
-  width: 30%;
+  width: 35%;
   height: 50%;
   background-image: url('images/sound_disabled.png');
   background-repeat: no-repeat;
